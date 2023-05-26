@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -138,13 +139,15 @@ public class DishServiceImpl implements DishService {
         // 取得菜品风味信息
         List<DishFlavor> dishFlavorList = dishDTO.getFlavors();
 
-        // 设置菜品风味的菜品Id
-        dishFlavorList.forEach(dishFlavor -> {
-            dishFlavor.setDishId(dish.getId());
-        });
+        if (dishFlavorList.size() > 0) {
+            // 设置菜品风味的菜品Id
+            dishFlavorList.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dish.getId());
+            });
 
-        // 插入菜品口味信息
-        dishFlavourMapper.insertDishFlavour(dishFlavorList);
+            // 插入菜品口味信息
+            dishFlavourMapper.insertDishFlavour(dishFlavorList);
+        }
 
     }
 
@@ -195,6 +198,21 @@ public class DishServiceImpl implements DishService {
         dish.setUpdateUser(BaseContext.getCurrentId());
 
         dishMapper.updateDish(dish);
+
+    }
+
+    /**
+     * 删除菜品
+     * @param ids 菜品Id列表
+     */
+    @Transactional
+    @Override
+    public void deleteDish(Long[] ids) {
+
+        dishMapper.deleteDish(Arrays.asList(ids));
+
+        // 删除菜品相关的口味
+        dishFlavourMapper.deleteDishFlavour(Arrays.asList(ids));
 
     }
 }

@@ -7,9 +7,11 @@ import com.sky.result.Result;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -95,6 +97,19 @@ public class DishController {
         dishService.updateDish(dishDTO);
 
         return null;
+    }
+
+    /**
+     * 删除菜品
+     * @param ids 菜品Id列表
+     * @return
+     */
+    @DeleteMapping
+    public Result<String> deleteDish(Long[] ids) {
+
+        dishService.deleteDish(ids);
+
+        return Result.success();
     }
 
 }

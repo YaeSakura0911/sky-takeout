@@ -16,4 +16,11 @@
 <!--        UPDATE dish_flavor SET value = #{value} WHERE dish_id = #{dishId} AND name = #{name}-->
 <!--    </update>-->
 
+    <delete id="deleteDishFlavour">
+        DELETE FROM dish_flavor WHERE dish_id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>

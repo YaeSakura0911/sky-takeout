@@ -45,4 +45,11 @@
         WHERE id = #{id}
     </update>
 
+    <delete id="deleteDish">
+        DELETE FROM dish WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>
