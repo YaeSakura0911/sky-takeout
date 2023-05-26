@@ -1,8 +1,11 @@
 package com.sky.service;
 
 import com.sky.dto.DishDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.vo.DishVO;
+
+import java.util.List;
 
 public interface DishService {
 
@@ -23,6 +26,13 @@ public interface DishService {
      * @return PageResult
      */
     PageResult getByPage(Long categoryId, String name, Integer status, Integer page, Integer pageSize);
+
+    /**
+     * 根据分类Id查询菜品
+     * @param categoryId 分类Id
+     * @return
+     */
+    List<Dish> getByList(Long categoryId);
 
     /**
      * 新增菜品

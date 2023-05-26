@@ -29,6 +29,14 @@ public interface DishMapper {
     List<Dish> getByPage(Long categoryId, String name, Integer status);
 
     /**
+     * 根据分类Id查询菜品
+     * @param categoryId 分类Id
+     * @return
+     */
+    @Select("SELECT * FROM dish WHERE category_id = #{categoryId}")
+    List<Dish> selectDishByCategoryId(Long categoryId);
+
+    /**
      * 插入菜品
      * @param dish
      * @return Long 菜品Id

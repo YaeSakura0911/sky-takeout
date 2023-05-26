@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/admin/dish")
@@ -42,6 +44,17 @@ public class DishController {
     public Result<PageResult> getByPage(Long categoryId, String name, Integer status, Integer page, Integer pageSize) {
 
         return Result.success(dishService.getByPage(categoryId, name, status, page, pageSize));
+    }
+
+    /**
+     * 根据分类Id查询菜品
+     * @param categoryId 分类Id
+     * @return
+     */
+    @GetMapping("/list")
+    public Result<List<Dish>> getByList(Long categoryId) {
+
+        return Result.success(dishService.getByList(categoryId));
     }
 
     /**
