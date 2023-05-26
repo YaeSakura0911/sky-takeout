@@ -12,4 +12,8 @@
         </foreach>
     </insert>
 
+<!--    <update id="updateDishFlavour">-->
+<!--        UPDATE dish_flavor SET value = #{value} WHERE dish_id = #{dishId} AND name = #{name}-->
+<!--    </update>-->
+
 </mapper>

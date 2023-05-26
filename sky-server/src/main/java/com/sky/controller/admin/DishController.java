@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -54,6 +55,33 @@ public class DishController {
         dishService.saveDish(dishDTO);
 
         return Result.success();
+    }
+
+    /**
+     * 起售、停售菜品
+     * @param status 状态
+     * @param id 菜品Id
+     * @return Result
+     */
+    @PostMapping("/status/{status}")
+    public Result<String> updateDishStatus(@PathVariable Integer status, Long id) {
+
+        dishService.updateDishStatus(status, id);
+
+        return Result.success();
+    }
+
+    /**
+     *
+     * @param dishDTO
+     * @return
+     */
+    @PutMapping
+    public Result<String> updateDish(@RequestBody DishDTO dishDTO) {
+
+        dishService.updateDish(dishDTO);
+
+        return null;
     }
 
 }

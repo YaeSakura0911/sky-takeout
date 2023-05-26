@@ -23,4 +23,10 @@ public interface DishFlavourMapper {
      */
     void insertDishFlavour(List<DishFlavor> dishFlavorList);
 
+    /**
+     *
+     * @param dishFlavorList
+     */
+    // void updateDishFlavour(List<DishFlavor> dishFlavorList);
+
 }

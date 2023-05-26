@@ -29,4 +29,17 @@ public interface DishService {
      * @param dishDTO
      */
     void saveDish(DishDTO dishDTO);
+
+    /**
+     *
+     * @param dishDTO
+     */
+    void updateDish(DishDTO dishDTO);
+
+    /**
+     * 起售、停售菜品
+     * @param status 状态
+     * @param id 菜品Id
+     */
+    void updateDishStatus(Integer status, Long id);
 }

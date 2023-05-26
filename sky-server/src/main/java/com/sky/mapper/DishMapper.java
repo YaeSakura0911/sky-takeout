@@ -29,11 +29,17 @@ public interface DishMapper {
     List<Dish> getByPage(Long categoryId, String name, Integer status);
 
     /**
-     *
+     * 插入菜品
      * @param dish
      * @return Long 菜品Id
      */
     @Options(keyProperty = "id", useGeneratedKeys = true)
     @Insert("INSERT INTO dish VALUE (null, #{name}, #{categoryId}, #{price}, #{image}, #{description}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     Long insertDish(Dish dish);
+
+    /**
+     * 更新菜品
+     * @param dish
+     */
+    void updateDish(Dish dish);
 }
