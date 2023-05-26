@@ -41,7 +41,7 @@ public interface DishService {
     void saveDish(DishDTO dishDTO);
 
     /**
-     *
+     * 更新菜品
      * @param dishDTO
      */
     void updateDish(DishDTO dishDTO);

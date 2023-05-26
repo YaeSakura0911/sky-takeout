@@ -124,17 +124,21 @@ public class DishServiceImpl implements DishService {
 
         BeanUtils.copyProperties(dishDTO, dish);
 
+        // 插入菜品创建、更新时间
         dish.setCreateTime(LocalDateTime.now());
         dish.setUpdateTime(LocalDateTime.now());
 
+        // 插入菜品创建、更新用户
         dish.setCreateUser(BaseContext.getCurrentId());
         dish.setUpdateUser(BaseContext.getCurrentId());
 
         // 插入菜品信息
         dishMapper.insertDish(dish);
 
+        // 取得菜品风味信息
         List<DishFlavor> dishFlavorList = dishDTO.getFlavors();
 
+        // 设置菜品风味的菜品Id
         dishFlavorList.forEach(dishFlavor -> {
             dishFlavor.setDishId(dish.getId());
         });
@@ -145,7 +149,7 @@ public class DishServiceImpl implements DishService {
     }
 
     /**
-     *
+     * 更新菜品
      * @param dishDTO
      */
     @Transactional
@@ -156,8 +160,11 @@ public class DishServiceImpl implements DishService {
 
         BeanUtils.copyProperties(dishDTO, dish);
 
+        // 设置菜品更新时间
         dish.setUpdateTime(LocalDateTime.now());
 
+
+        // 设置菜品更新用户
         dish.setUpdateUser(BaseContext.getCurrentId());
 
         // dishMapper.updateDish(dish);

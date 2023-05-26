@@ -85,7 +85,7 @@ public class DishController {
     }
 
     /**
-     *
+     * 更新菜品
      * @param dishDTO
      * @return
      */
