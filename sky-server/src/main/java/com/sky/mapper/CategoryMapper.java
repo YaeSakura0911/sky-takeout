@@ -12,6 +12,14 @@ import java.util.List;
 public interface CategoryMapper {
 
     /**
+     * 根据Id查询分类
+     * @param id 分类Id
+     * @return Category
+     */
+    @Select("SELECT * FROM category WHERE id = #{id}")
+    Category getById(Long id);
+
+    /**
      * 根据分页查询分类
      * @param name 分类名称
      * @param type 分类类型
