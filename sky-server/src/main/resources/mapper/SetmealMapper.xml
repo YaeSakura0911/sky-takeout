@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.SetmealMapper">
 
+    <!--  -->
     <select id="selectSetmealByPage" resultType="com.sky.entity.Setmeal">
         SELECT * FROM setmeal
         <where>

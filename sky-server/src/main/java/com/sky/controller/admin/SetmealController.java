@@ -1,12 +1,13 @@
 package com.sky.controller.admin;
 
+import com.sky.dto.SetmealDTO;
+import com.sky.entity.Setmeal;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
+import com.sky.vo.SetmealVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/setmeal")
@@ -28,5 +29,24 @@ public class SetmealController {
     public Result<PageResult> getByPage(Long categoryId, String name, Integer status, Integer page, Integer pageSize) {
 
         return Result.success(setmealService.getByPage(categoryId, name, status, page, pageSize));
+    }
+
+    @GetMapping("/{id}")
+    public Result<SetmealVO> getById(@PathVariable Long id) {
+
+        return Result.success(setmealService.getById(id));
+    }
+
+    /**
+     *
+     * @param setmealDTO
+     * @return
+     */
+    @PostMapping
+    public Result<String> saveSetmeal(@RequestBody SetmealDTO setmealDTO) {
+
+        setmealService.saveSetmeal(setmealDTO);
+
+        return Result.success();
     }
 }
