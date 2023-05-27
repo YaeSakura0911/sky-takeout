@@ -24,22 +24,30 @@ public interface SetmealMapper {
     /**
      * 根据Id查询套餐
      * @param id 套餐Id
-     * @return
+     * @return Setmeal
      */
     @Select("SELECT * FROM setmeal WHERE id = #{id}")
     Setmeal selectSetmealById(Long id);
 
     /**
+     * 根据分类Id查询套餐
+     * @param categoryId 套餐Id
+     * @return List<Setmeal> - 套餐列表
+     */
+    @Select("SELECT * FROM setmeal WHERE category_id = #{categoryId}")
+    List<Setmeal> selectSetmealByCategoryId(Long categoryId);
+
+    /**
      * 新增套餐
-     * @param setmeal
+     * @param setmeal 套餐Entity
      */
     @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("INSERT INTO setmeal VALUE (null, #{categoryId}, #{name}, #{price}, #{status}, #{description}, #{image}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     void insertSetmeal(Setmeal setmeal);
 
     /**
-     *
-     * @param setmeal
+     * 更新套餐
+     * @param setmeal 套餐Entity
      */
     void updateSetmeal(Setmeal setmeal);
 

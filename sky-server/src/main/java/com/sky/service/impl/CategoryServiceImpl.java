@@ -2,11 +2,17 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
 import com.sky.entity.Category;
+import com.sky.entity.Dish;
+import com.sky.entity.Setmeal;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
+import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.CategoryService;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +27,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private DishMapper dishMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
 
     /**
      * 根据分页查询分类
@@ -45,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * 根据类型查询分类
      * @param type 分类类型
-     * @return List
+     * @return List 分类列表
      */
     @Override
     public List<Category> getByList(Integer type) {
@@ -55,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 新增分类
-     * @param categoryDTO
+     * @param categoryDTO 分类DTO
      */
     @Override
     public void saveCategory(CategoryDTO categoryDTO) {
@@ -109,7 +119,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 更新分类
-     * @param categoryDTO
+     * @param categoryDTO 分类DTO
      */
     @Override
     public void updateCategory(CategoryDTO categoryDTO) {
@@ -129,12 +139,30 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 删除分类
-     * @param id 分类Id
+     * @param categoryId 分类Id
      */
     @Override
-    public void deleteCategory(Long id) {
+    public void deleteCategory(Long categoryId) {
 
-        // TODO: 分类下可能包含菜品，直接删除可能会出现问题
-        categoryMapper.deleteCategory(id);
+        // 执行根据分类Id查询套餐SQL
+        List<Setmeal> setmealList = setmealMapper.selectSetmealByCategoryId(categoryId);
+
+        // 如果套餐列表不为空
+        if (setmealList != null) {
+            //  抛出DeletionNotAllowedException异常
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
+        }
+
+        // 执行根据分类Id查询菜品SQL
+        List<Dish> dishList = dishMapper.selectDishByCategoryId(categoryId);
+
+        // 如果菜品列表不为空
+        if (dishList != null) {
+            // 抛出DeletionNotAllowedException异常
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);
+        }
+
+        // 执行删除分类SQL
+        categoryMapper.deleteCategory(categoryId);
     }
 }

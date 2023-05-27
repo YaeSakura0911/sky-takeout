@@ -48,7 +48,7 @@ public class CategoryController {
 
     /**
      * 新增分类
-     * @param categoryDTO
+     * @param categoryDTO 分类DTO
      * @return Result
      */
     @PostMapping
@@ -75,7 +75,7 @@ public class CategoryController {
 
     /**
      * 更新分类
-     * @param categoryDTO
+     * @param categoryDTO 分类DTO
      * @return Result
      */
     @PutMapping

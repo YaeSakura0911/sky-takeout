@@ -37,13 +37,13 @@ public interface CategoryMapper {
 
     /**
      * 更新分类
-     * @param category
+     * @param category 分类Entity
      */
     void updateCategory(Category category);
 
     /**
      * 新增分类
-     * @param category
+     * @param category 分类Entity
      */
     @Insert("INSERT INTO category VALUE (null, #{type}, #{name}, #{sort}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     void saveCategory(Category category);

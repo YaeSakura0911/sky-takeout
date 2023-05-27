@@ -27,7 +27,7 @@ public interface CategoryService {
 
     /**
      * 新增分类
-     * @param categoryDTO
+     * @param categoryDTO 分类DTO
      */
     void saveCategory(CategoryDTO categoryDTO);
 
@@ -40,7 +40,7 @@ public interface CategoryService {
 
     /**
      * 更新分类
-     * @param categoryDTO
+     * @param categoryDTO 分类DTO
      */
     void updateCategory(CategoryDTO categoryDTO);
 
