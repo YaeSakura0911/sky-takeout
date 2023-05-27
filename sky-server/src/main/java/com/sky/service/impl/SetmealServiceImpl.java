@@ -48,7 +48,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 根据Id查询套餐
-     * @param id
+     * @param id 套餐Id
      * @return
      */
     @Override
@@ -56,11 +56,13 @@ public class SetmealServiceImpl implements SetmealService {
 
         SetmealVO setmealVO = new SetmealVO();
 
+        // 查询套餐信息
         Setmeal setmeal = setmealMapper.selectSetmealById(id);
 
         BeanUtils.copyProperties(setmeal, setmealVO);
 
-        List<SetmealDish> setmealDishList = setmealDishMapper.selectSetmealDishByDishId(id);
+        // 查询套餐菜品信息
+        List<SetmealDish> setmealDishList = setmealDishMapper.selectSetmealDishBySetmealId(id);
 
         setmealVO.setSetmealDishes(setmealDishList);
 

@@ -31,6 +31,11 @@ public class SetmealController {
         return Result.success(setmealService.getByPage(categoryId, name, status, page, pageSize));
     }
 
+    /**
+     * 根据Id查询套餐
+     * @param id 套餐Id
+     * @return
+     */
     @GetMapping("/{id}")
     public Result<SetmealVO> getById(@PathVariable Long id) {
 
