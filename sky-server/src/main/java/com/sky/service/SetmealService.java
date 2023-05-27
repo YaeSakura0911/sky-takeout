@@ -31,8 +31,14 @@ public interface SetmealService {
     void saveSetmeal(SetmealDTO setmealDTO);
 
     /**
-     *
+     * 更新套餐状态
      * @param status
      */
     void updateSetmealStatus(Long id, Integer status);
+
+    /**
+     * 批量删除套餐
+     * @param ids 套餐Id列表
+     */
+    void deleteSetmeal(Long[] ids);
 }

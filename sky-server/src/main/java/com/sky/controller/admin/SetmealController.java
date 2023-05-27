@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.MessageConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -62,10 +63,15 @@ public class SetmealController {
         return Result.success();
     }
 
+    /**
+     * 批量删除套餐
+     * @param ids 套餐Id列表
+     * @return
+     */
     @DeleteMapping
     public Result<String> deleteSetmeal(Long[] ids) {
 
-
+        setmealService.deleteSetmeal(ids);
 
         return Result.success();
     }

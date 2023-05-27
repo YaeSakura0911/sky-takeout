@@ -46,4 +46,12 @@
         WHERE id = #{id}
     </update>
 
+    <!-- 批量删除套餐 -->
+    <delete id="deleteSetmeal">
+        DELETE FROM setmeal WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>

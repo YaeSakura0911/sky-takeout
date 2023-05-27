@@ -12,4 +12,12 @@
         </foreach>
     </insert>
 
+    <!-- 批量删除套餐菜品 -->
+    <delete id="deleteSetmealDish">
+        DELETE FROM setmeal_dish WHERE setmeal_id IN
+        <foreach collection="setmealIdList" item="setmealId" open="(" close=")" separator=",">
+            #{setmealId}
+        </foreach>
+    </delete>
+
 </mapper>

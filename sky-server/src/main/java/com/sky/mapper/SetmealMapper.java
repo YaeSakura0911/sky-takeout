@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface SetmealMapper {
 
@@ -40,4 +42,10 @@ public interface SetmealMapper {
      * @param setmeal
      */
     void updateSetmeal(Setmeal setmeal);
+
+    /**
+     * 批量删除套餐
+     * @param ids 套餐Id列表
+     */
+    void deleteSetmeal(List<Long> ids);
 }
