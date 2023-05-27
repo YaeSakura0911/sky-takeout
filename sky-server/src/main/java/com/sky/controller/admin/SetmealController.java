@@ -62,4 +62,12 @@ public class SetmealController {
         return Result.success();
     }
 
+    @DeleteMapping
+    public Result<String> deleteSetmeal(Long[] ids) {
+
+
+
+        return Result.success();
+    }
+
 }

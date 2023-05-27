@@ -139,19 +139,22 @@ public class SetmealServiceImpl implements SetmealService {
     @Override
     public void updateSetmealStatus(Long id, Integer status) {
 
-        // 根据Id查询当前套餐的所有菜品
-        List<SetmealDish> setmealDishList = setmealDishMapper.selectSetmealDishBySetmealId(id);
+        // 如果是起售套餐
+        if (status == 1) {
+            // 根据Id查询当前套餐的所有菜品
+            List<SetmealDish> setmealDishList = setmealDishMapper.selectSetmealDishBySetmealId(id);
 
-        // 遍历所有菜品
-        setmealDishList.forEach(setmealDish -> {
-            Dish dish = dishMapper.getById(setmealDish.getDishId());
+            // 遍历所有菜品
+            setmealDishList.forEach(setmealDish -> {
+                Dish dish = dishMapper.getById(setmealDish.getDishId());
 
-            // 如果有未起售的菜品
-            if (dish.getStatus() == 0) {
-                // 抛出SetmealEnableFailed异常
-                throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
-            }
-        });
+                // 如果有未起售的菜品
+                if (dish.getStatus() == 0) {
+                    // 抛出SetmealEnableFailed异常
+                    throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                }
+            });
+        }
 
         Setmeal setmeal = new Setmeal();
 
