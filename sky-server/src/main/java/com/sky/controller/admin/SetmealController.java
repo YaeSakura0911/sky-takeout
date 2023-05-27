@@ -1,7 +1,6 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.SetmealDTO;
-import com.sky.entity.Setmeal;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
@@ -17,12 +16,12 @@ public class SetmealController {
     private SetmealService setmealService;
 
     /**
-     *
-     * @param categoryId
-     * @param name
-     * @param status
-     * @param page
-     * @param pageSize
+     * 根据分页查询套餐
+     * @param categoryId 分类Id
+     * @param name 套餐名称
+     * @param status 套餐状态
+     * @param page 页码
+     * @param pageSize 分页大小
      * @return
      */
     @GetMapping("/page")
@@ -43,7 +42,7 @@ public class SetmealController {
     }
 
     /**
-     *
+     * 新增套餐
      * @param setmealDTO
      * @return
      */
@@ -54,4 +53,13 @@ public class SetmealController {
 
         return Result.success();
     }
+
+    @PostMapping("/status/{status}")
+    public Result<String> updateSetmealStatus(Long id, @PathVariable Integer status) {
+
+        setmealService.updateSetmealStatus(id, status);
+
+        return Result.success();
+    }
+
 }

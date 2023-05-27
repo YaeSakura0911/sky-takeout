@@ -29,4 +29,10 @@ public interface SetmealService {
      * @param setmealDTO
      */
     void saveSetmeal(SetmealDTO setmealDTO);
+
+    /**
+     *
+     * @param status
+     */
+    void updateSetmealStatus(Long id, Integer status);
 }

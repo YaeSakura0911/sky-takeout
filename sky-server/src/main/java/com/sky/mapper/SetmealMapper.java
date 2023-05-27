@@ -20,8 +20,8 @@ public interface SetmealMapper {
     Page<Setmeal> selectSetmealByPage(Long categoryId, String name, Integer status);
 
     /**
-     *
-     * @param id
+     * 根据Id查询套餐
+     * @param id 套餐Id
      * @return
      */
     @Select("SELECT * FROM setmeal WHERE id = #{id}")
@@ -34,4 +34,10 @@ public interface SetmealMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("INSERT INTO setmeal VALUE (null, #{categoryId}, #{name}, #{price}, #{status}, #{description}, #{image}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     void insertSetmeal(Setmeal setmeal);
+
+    /**
+     *
+     * @param setmeal
+     */
+    void updateSetmeal(Setmeal setmeal);
 }
