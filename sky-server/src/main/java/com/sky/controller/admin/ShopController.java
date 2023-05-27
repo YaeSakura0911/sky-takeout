@@ -3,9 +3,7 @@ package com.sky.controller.admin;
 import com.sky.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/shop")
@@ -26,6 +24,19 @@ public class ShopController {
         Integer status = (Integer) redisTemplate.opsForValue().get(KEY);
 
         return Result.success(status);
+    }
+
+    /**
+     * 设置店铺状态
+     * @param status 店铺状态
+     * @return Result
+     */
+    @PutMapping("/{status}")
+    public Result<String> setShopStatus(@PathVariable Integer status) {
+
+        redisTemplate.opsForValue().set(KEY, status);
+
+        return Result.success();
     }
 
 }
