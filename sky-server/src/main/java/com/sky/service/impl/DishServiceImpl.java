@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,28 +125,34 @@ public class DishServiceImpl implements DishService {
 
         BeanUtils.copyProperties(dishDTO, dish);
 
+        // 插入菜品创建、更新时间
         dish.setCreateTime(LocalDateTime.now());
         dish.setUpdateTime(LocalDateTime.now());
 
+        // 插入菜品创建、更新用户
         dish.setCreateUser(BaseContext.getCurrentId());
         dish.setUpdateUser(BaseContext.getCurrentId());
 
         // 插入菜品信息
         dishMapper.insertDish(dish);
 
+        // 取得菜品风味信息
         List<DishFlavor> dishFlavorList = dishDTO.getFlavors();
 
-        dishFlavorList.forEach(dishFlavor -> {
-            dishFlavor.setDishId(dish.getId());
-        });
+        if (dishFlavorList.size() > 0) {
+            // 设置菜品风味的菜品Id
+            dishFlavorList.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dish.getId());
+            });
 
-        // 插入菜品口味信息
-        dishFlavourMapper.insertDishFlavour(dishFlavorList);
+            // 插入菜品口味信息
+            dishFlavourMapper.insertDishFlavour(dishFlavorList);
+        }
 
     }
 
     /**
-     *
+     * 更新菜品
      * @param dishDTO
      */
     @Transactional
@@ -156,8 +163,11 @@ public class DishServiceImpl implements DishService {
 
         BeanUtils.copyProperties(dishDTO, dish);
 
+        // 设置菜品更新时间
         dish.setUpdateTime(LocalDateTime.now());
 
+
+        // 设置菜品更新用户
         dish.setUpdateUser(BaseContext.getCurrentId());
 
         // dishMapper.updateDish(dish);
@@ -188,6 +198,21 @@ public class DishServiceImpl implements DishService {
         dish.setUpdateUser(BaseContext.getCurrentId());
 
         dishMapper.updateDish(dish);
+
+    }
+
+    /**
+     * 删除菜品
+     * @param ids 菜品Id列表
+     */
+    @Transactional
+    @Override
+    public void deleteDish(Long[] ids) {
+
+        dishMapper.deleteDish(Arrays.asList(ids));
+
+        // 删除菜品相关的口味
+        dishFlavourMapper.deleteDishFlavour(Arrays.asList(ids));
 
     }
 }

@@ -41,7 +41,7 @@ public interface DishService {
     void saveDish(DishDTO dishDTO);
 
     /**
-     *
+     * 更新菜品
      * @param dishDTO
      */
     void updateDish(DishDTO dishDTO);
@@ -52,4 +52,10 @@ public interface DishService {
      * @param id 菜品Id
      */
     void updateDishStatus(Integer status, Long id);
+
+    /**
+     * 删除菜品
+     * @param ids 菜品Id列表
+     */
+    void deleteDish(Long[] ids);
 }

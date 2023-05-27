@@ -1,8 +1,10 @@
 package com.sky.mapper;
 
 import com.sky.entity.DishFlavor;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -28,5 +30,11 @@ public interface DishFlavourMapper {
      * @param dishFlavorList
      */
     // void updateDishFlavour(List<DishFlavor> dishFlavorList);
+
+    /**
+     * 根据Id删除口味信息
+     * @param ids 菜品Id列表
+     */
+    void deleteDishFlavour(List<Long> ids);
 
 }
