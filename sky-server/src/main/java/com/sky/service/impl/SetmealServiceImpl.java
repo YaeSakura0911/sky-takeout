@@ -4,8 +4,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.context.BaseContext;
 import com.sky.dto.SetmealDTO;
+import com.sky.entity.Category;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -18,10 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SetmealServiceImpl implements SetmealService {
 
+    @Autowired
+    private CategoryMapper categoryMapper;
     @Autowired
     private SetmealMapper setmealMapper;
     @Autowired
@@ -43,7 +48,20 @@ public class SetmealServiceImpl implements SetmealService {
 
         Page<Setmeal> setmealPage = setmealMapper.selectSetmealByPage(categoryId, name, status);
 
-        return new PageResult(setmealPage.getTotal(), setmealPage.getResult());
+        List<SetmealVO> setmealVOList = setmealPage.getResult().stream().map(setmeal -> {
+
+            SetmealVO setmealVO = new SetmealVO();
+
+            BeanUtils.copyProperties(setmeal, setmealVO);
+
+            Category category = categoryMapper.getById(setmeal.getCategoryId());
+
+            setmealVO.setCategoryName(category.getName());
+
+            return setmealVO;
+        }).collect(Collectors.toList());
+
+        return new PageResult(setmealPage.getTotal(), setmealVOList);
     }
 
     /**
