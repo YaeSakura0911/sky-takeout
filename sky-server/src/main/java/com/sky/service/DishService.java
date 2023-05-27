@@ -30,19 +30,19 @@ public interface DishService {
     /**
      * 根据分类Id查询菜品
      * @param categoryId 分类Id
-     * @return
+     * @return 菜品列表
      */
     List<Dish> getByList(Long categoryId);
 
     /**
      * 新增菜品
-     * @param dishDTO
+     * @param dishDTO 菜品DTO
      */
     void saveDish(DishDTO dishDTO);
 
     /**
      * 更新菜品
-     * @param dishDTO
+     * @param dishDTO 菜品DTO
      */
     void updateDish(DishDTO dishDTO);
 
@@ -54,7 +54,7 @@ public interface DishService {
     void updateDishStatus(Integer status, Long id);
 
     /**
-     * 删除菜品
+     * 批量删除菜品
      * @param ids 菜品Id列表
      */
     void deleteDish(Long[] ids);

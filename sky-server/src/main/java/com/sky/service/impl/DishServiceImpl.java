@@ -2,14 +2,18 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.DishDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.SetmealDish;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavourMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -32,6 +36,8 @@ public class DishServiceImpl implements DishService {
     private CategoryMapper categoryMapper;
     @Autowired
     private DishFlavourMapper dishFlavourMapper;
+    @Autowired
+    private SetmealDishMapper setmealDishMapper;
 
     /**
      * 根据Id查询菜品
@@ -44,7 +50,7 @@ public class DishServiceImpl implements DishService {
         DishVO dishVO = new DishVO();
 
         // 查询菜品信息
-        Dish dish = dishMapper.getById(id);
+        Dish dish = dishMapper.selectDishById(id);
 
         // 查询分类信息
         Category category = categoryMapper.getById(dish.getCategoryId());
@@ -80,7 +86,7 @@ public class DishServiceImpl implements DishService {
         PageHelper.startPage(page, pageSize);
 
         // 执行分页查询
-        List<Dish> dishList = dishMapper.getByPage(categoryId, name, status);
+        List<Dish> dishList = dishMapper.selectDishByPage(categoryId, name, status);
 
         // 获取查询结果
         Page<Dish> dishPage = (Page<Dish>) dishList;
@@ -105,7 +111,7 @@ public class DishServiceImpl implements DishService {
     /**
      * 根据分类Id查询菜品
      * @param categoryId 分类Id
-     * @return
+     * @return List 菜品列表
      */
     @Override
     public List<Dish> getByList(Long categoryId) {
@@ -115,7 +121,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 新增菜品
-     * @param dishDTO
+     * @param dishDTO 菜品DTO
      */
     @Transactional
     @Override
@@ -153,7 +159,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 更新菜品
-     * @param dishDTO
+     * @param dishDTO 菜品DTO
      */
     @Transactional
     @Override
@@ -202,16 +208,40 @@ public class DishServiceImpl implements DishService {
     }
 
     /**
-     * 删除菜品
+     * 批量删除菜品
      * @param ids 菜品Id列表
      */
     @Transactional
     @Override
     public void deleteDish(Long[] ids) {
 
+        List<Long> dishIdList = Arrays.asList(ids);
+
+        // 遍历菜品Id列表
+        dishIdList.forEach(dishId -> {
+            // 执行根据菜品Id查询菜品
+            Dish dish = dishMapper.selectDishById(dishId);
+
+            // 执行根据菜品Id查询套餐菜品
+            List<SetmealDish> setmealDishList = setmealDishMapper.selectSetmealDishByDishId(dishId);
+
+            // 如果菜品已起售
+            if (dish.getStatus() == 1) {
+                // 抛出DeletionNotAllowedException异常
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+            }
+
+            // 如果套餐菜品列表不为空
+            if (setmealDishList != null) {
+                // 抛出DeletionNotAllowedException异常
+                throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+            }
+        });
+
+        // 执行删除菜品SQL
         dishMapper.deleteDish(Arrays.asList(ids));
 
-        // 删除菜品相关的口味
+        // 执行删除菜品相关的口味SQL
         dishFlavourMapper.deleteDishFlavour(Arrays.asList(ids));
 
     }

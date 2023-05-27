@@ -4,7 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.DishMapper">
 
-    <select id="getByPage" resultType="com.sky.entity.Dish">
+    <!-- 根据分页查询菜品 -->
+    <select id="selectDishByPage" resultType="com.sky.entity.Dish">
         SELECT * FROM dish
         <where>
             <if test="name != null">
@@ -19,6 +20,7 @@
         </where>
     </select>
 
+    <!-- 更新菜品 -->
     <update id="updateDish">
         UPDATE dish
         <set>
@@ -45,6 +47,7 @@
         WHERE id = #{id}
     </update>
 
+    <!-- 删除菜品 -->
     <delete id="deleteDish">
         DELETE FROM dish WHERE id IN
         <foreach collection="ids" item="id" open="(" close=")" separator=",">

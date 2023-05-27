@@ -17,7 +17,7 @@ public interface DishMapper {
      * @return Dish
      */
     @Select("SELECT * FROM dish WHERE id = #{id}")
-    Dish getById(Long id);
+    Dish selectDishById(Long id);
 
     /**
      * 根据分页查询菜品
@@ -26,7 +26,7 @@ public interface DishMapper {
      * @param status 菜品状态
      * @return List
      */
-    List<Dish> getByPage(Long categoryId, String name, Integer status);
+    List<Dish> selectDishByPage(Long categoryId, String name, Integer status);
 
     /**
      * 根据分类Id查询菜品
@@ -38,7 +38,7 @@ public interface DishMapper {
 
     /**
      * 插入菜品
-     * @param dish
+     * @param dish 菜品Entity
      * @return Long 菜品Id
      */
     @Options(keyProperty = "id", useGeneratedKeys = true)
@@ -47,12 +47,12 @@ public interface DishMapper {
 
     /**
      * 更新菜品
-     * @param dish
+     * @param dish 菜品Entity
      */
     void updateDish(Dish dish);
 
     /**
-     * 删除菜品
+     * 批量删除菜品
      * @param ids 菜品Id列表
      */
     void deleteDish(List<Long> ids);

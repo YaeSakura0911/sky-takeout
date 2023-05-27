@@ -7,11 +7,9 @@ import com.sky.result.Result;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -51,7 +49,7 @@ public class DishController {
     /**
      * 根据分类Id查询菜品
      * @param categoryId 分类Id
-     * @return
+     * @return Result
      */
     @GetMapping("/list")
     public Result<List<Dish>> getByList(Long categoryId) {
@@ -61,8 +59,8 @@ public class DishController {
 
     /**
      * 新增菜品
-     * @param dishDTO
-     * @return
+     * @param dishDTO 菜品DTO
+     * @return Result
      */
     @PostMapping
     public Result<String> saveDish(@RequestBody DishDTO dishDTO) {
@@ -88,8 +86,8 @@ public class DishController {
 
     /**
      * 更新菜品
-     * @param dishDTO
-     * @return
+     * @param dishDTO 菜品DTO
+     * @return Result
      */
     @PutMapping
     public Result<String> updateDish(@RequestBody DishDTO dishDTO) {
@@ -100,9 +98,9 @@ public class DishController {
     }
 
     /**
-     * 删除菜品
+     * 批量删除菜品
      * @param ids 菜品Id列表
-     * @return
+     * @return Result
      */
     @DeleteMapping
     public Result<String> deleteDish(Long[] ids) {

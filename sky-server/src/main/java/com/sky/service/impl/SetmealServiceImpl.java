@@ -79,7 +79,7 @@ public class SetmealServiceImpl implements SetmealService {
     /**
      * 根据Id查询套餐
      * @param id 套餐Id
-     * @return
+     * @return SetmealVO 套餐VO
      */
     @Override
     public SetmealVO getById(Long id) {
@@ -103,7 +103,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 新增套餐
-     * @param setmealDTO
+     * @param setmealDTO 套餐DTO
      */
     @Transactional
     @Override
@@ -149,7 +149,7 @@ public class SetmealServiceImpl implements SetmealService {
 
             // 遍历所有菜品
             setmealDishList.forEach(setmealDish -> {
-                Dish dish = dishMapper.getById(setmealDish.getDishId());
+                Dish dish = dishMapper.selectDishById(setmealDish.getDishId());
 
                 // 如果有未起售的菜品
                 if (dish.getStatus() == 0) {
