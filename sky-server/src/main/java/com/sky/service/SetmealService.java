@@ -32,9 +32,16 @@ public interface SetmealService {
 
     /**
      * 更新套餐状态
-     * @param status
+     * @param id 套餐Id
+     * @param status 套餐状态
      */
     void updateSetmealStatus(Long id, Integer status);
+
+    /**
+     * 更新套餐
+     * @param setmealDTO 套餐DTO
+     */
+    void updateSetmeal(SetmealDTO setmealDTO);
 
     /**
      * 批量删除套餐

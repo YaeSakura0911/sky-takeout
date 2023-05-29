@@ -55,12 +55,32 @@ public class SetmealController {
         return Result.success();
     }
 
+    /**
+     * 更新套餐状态
+     * @param id 套餐Id
+     * @param status 套餐状态
+     * @return
+     */
     @PostMapping("/status/{status}")
     public Result<String> updateSetmealStatus(Long id, @PathVariable Integer status) {
 
         setmealService.updateSetmealStatus(id, status);
 
         return Result.success();
+    }
+
+    /**
+     * 更新套餐
+     * @param setmealDTO 套餐DTO
+     * @return Result
+     */
+    @PutMapping
+    public Result<String> updateSetmeal(@RequestBody SetmealDTO setmealDTO) {
+
+        setmealService.updateSetmeal(setmealDTO);
+
+        return Result.success();
+
     }
 
     /**
