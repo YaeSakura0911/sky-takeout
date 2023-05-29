@@ -94,7 +94,7 @@ public class DishController {
 
         dishService.updateDish(dishDTO);
 
-        return null;
+        return Result.success();
     }
 
     /**
