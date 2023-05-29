@@ -20,6 +20,7 @@ import com.sky.service.SetmealService;
 import com.sky.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -174,6 +175,46 @@ public class SetmealServiceImpl implements SetmealService {
 
         // 执行更新套餐状态信息
         setmealMapper.updateSetmeal(setmeal);
+    }
+
+    /**
+     * 更新套餐
+     * @param setmealDTO 套餐DTO
+     */
+    @Override
+    public void updateSetmeal(SetmealDTO setmealDTO) {
+
+        Setmeal setmeal = new Setmeal();
+
+        BeanUtils.copyProperties(setmealDTO, setmeal);
+
+        // 设置更新时间
+        setmeal.setUpdateTime(LocalDateTime.now());
+
+        // 设置更新用户
+        setmeal.setUpdateUser(BaseContext.getCurrentId());
+
+        // 执行更新套餐SQL
+        setmealMapper.updateSetmeal(setmeal);
+
+        // 执行删除套餐菜品SQL
+        setmealDishMapper.deleteSetmealDishBySetmealId(setmealDTO.getId());
+
+        // 如果套餐菜品列表不为空
+        if (setmealDTO.getSetmealDishes().size() > 0) {
+
+            List<SetmealDish> setmealDishList = setmealDTO.getSetmealDishes();
+
+            // 遍历套餐菜品列表
+            setmealDishList.forEach(setmealDish -> {
+                // 设置套餐Id
+                setmealDish.setSetmealId(setmealDTO.getId());
+            });
+
+            // 执行插入套餐菜品SQL
+            setmealDishMapper.insertSetmealDish(setmealDishList);
+
+        }
     }
 
     /**
