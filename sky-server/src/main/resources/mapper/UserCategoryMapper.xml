@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.UserCategoryMapper">
+
+    <!-- 根据分类类型查询分类 -->
+    <select id="selectCategoryByType" resultType="com.sky.entity.Category">
+        SELECT * FROM category
+        <where>
+            <if test="type != null">
+                type = #{type}
+            </if>
+        </where>
+    </select>
+
+</mapper>
