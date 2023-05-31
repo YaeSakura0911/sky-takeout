@@ -23,7 +23,7 @@ public class SetmealController {
      * @param status 套餐状态
      * @param page 页码
      * @param pageSize 分页大小
-     * @return
+     * @return Result
      */
     @GetMapping("/page")
     public Result<PageResult> getByPage(Long categoryId, String name, Integer status, Integer page, Integer pageSize) {
@@ -34,7 +34,7 @@ public class SetmealController {
     /**
      * 根据Id查询套餐
      * @param id 套餐Id
-     * @return
+     * @return Result
      */
     @GetMapping("/{id}")
     public Result<SetmealVO> getById(@PathVariable Long id) {
@@ -44,8 +44,8 @@ public class SetmealController {
 
     /**
      * 新增套餐
-     * @param setmealDTO
-     * @return
+     * @param setmealDTO 套餐DTO
+     * @return Result
      */
     @PostMapping
     public Result<String> saveSetmeal(@RequestBody SetmealDTO setmealDTO) {
@@ -59,7 +59,7 @@ public class SetmealController {
      * 更新套餐状态
      * @param id 套餐Id
      * @param status 套餐状态
-     * @return
+     * @return Result
      */
     @PostMapping("/status/{status}")
     public Result<String> updateSetmealStatus(Long id, @PathVariable Integer status) {
@@ -86,7 +86,7 @@ public class SetmealController {
     /**
      * 批量删除套餐
      * @param ids 套餐Id列表
-     * @return
+     * @return Result
      */
     @DeleteMapping
     public Result<String> deleteSetmeal(Long[] ids) {

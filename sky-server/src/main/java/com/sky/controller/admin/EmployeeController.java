@@ -36,7 +36,7 @@ public class EmployeeController {
     /**
      * 根据Id查询员工
      * @param id 员工Id
-     * @return
+     * @return Result
      */
     @GetMapping("/{id}")
     public Result<Employee> getById(@PathVariable Long id) {
@@ -46,8 +46,10 @@ public class EmployeeController {
 
     /**
      * 根据分页查询员工
-     * @param name
-     * @return
+     * @param name 菜品名称
+     * @param page 当前页码
+     * @param pageSize 分页大小
+     * @return Result
      */
     @GetMapping("/page")
     public Result<PageResult> getByPage(String name, Integer page, Integer pageSize) {
@@ -58,8 +60,8 @@ public class EmployeeController {
     /**
      * 员工登录
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 员工登录DTO
+     * @return Result
      */
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
@@ -89,7 +91,7 @@ public class EmployeeController {
     /**
      * 员工登出
      *
-     * @return
+     * @return Result
      */
     @PostMapping("/logout")
     public Result<String> logout() {
@@ -102,8 +104,8 @@ public class EmployeeController {
 
     /**
      * 新增员工
-     * @param employeeDTO
-     * @return
+     * @param employeeDTO 员工DTO
+     * @return Result
      */
     @PostMapping
     public Result<String> saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
@@ -117,10 +119,10 @@ public class EmployeeController {
      * 更新员工状态
      * @param status 员工状态
      * @param id 员工Id
-     * @return
+     * @return Result
      */
     @PostMapping("/status/{status}")
-    public Result<String> updateStatus(@PathVariable Integer status, Integer id) {
+    public Result<String> updateStatus(@PathVariable Integer status, Long id) {
 
         employeeService.updateStatus(status, id);
 
@@ -129,8 +131,8 @@ public class EmployeeController {
 
     /**
      * 更新员工信息
-     * @param employeeDTO
-     * @return
+     * @param employeeDTO 员工DTO
+     * @return Result
      */
     @PutMapping
     public Result<String> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
@@ -142,8 +144,8 @@ public class EmployeeController {
 
     /**
      * 更新员工密码
-     * @param passwordEditDTO
-     * @return
+     * @param passwordEditDTO 密码编辑DTO
+     * @return Result
      */
     @PutMapping("editPassword")
     public Result<String> updatePassword(@RequestBody PasswordEditDTO passwordEditDTO) {

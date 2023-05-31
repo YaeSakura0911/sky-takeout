@@ -12,7 +12,7 @@ public interface EmployeeService {
     /**
      * 根据Id查询员工
      * @param id 员工Id
-     * @return
+     * @return Employee
      */
     Employee getById(Long id);
 
@@ -21,37 +21,39 @@ public interface EmployeeService {
      * @param name 员工姓名
      * @param page 页码
      * @param pageSize 分页大小
-     * @return
+     * @return PageResult
      */
     PageResult getByPage(String name, Integer page, Integer pageSize);
 
     /**
      * 员工登录
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 员工登录DTO
+     * @return Employee
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
     /**
      * 新增员工
-     * @param employeeDTO
+     * @param employeeDTO 员工DTO
      */
     void saveEmployee(EmployeeDTO employeeDTO);
 
     /**
      * 更新员工状态
+     * @param status 员工状态
+     * @param id 员工Id
      */
-    void updateStatus(Integer status, Integer id);
+    void updateStatus(Integer status, Long id);
 
     /**
      * 更新员工信息
-     * @param employeeDTO
+     * @param employeeDTO 员工DTO
      */
     void updateEmployee(EmployeeDTO employeeDTO);
 
     /**
      * 更新员工密码
-     * @param passwordEditDTO
+     * @param passwordEditDTO 密码编辑DTO
      */
     void updatePassword(PasswordEditDTO passwordEditDTO);
 }

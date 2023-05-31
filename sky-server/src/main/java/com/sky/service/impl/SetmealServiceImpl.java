@@ -58,6 +58,7 @@ public class SetmealServiceImpl implements SetmealService {
 
         Page<Setmeal> setmealPage = setmealMapper.selectSetmealByPage(categoryId, name, status);
 
+        // 遍历套餐菜品列表
         List<SetmealVO> setmealVOList = setmealPage.getResult().stream().map(setmeal -> {
 
             SetmealVO setmealVO = new SetmealVO();
@@ -115,19 +116,20 @@ public class SetmealServiceImpl implements SetmealService {
         BeanUtils.copyProperties(setmealDTO, setmeal);
 
         // 设置创建、更新时间
-        setmeal.setCreateTime(LocalDateTime.now());
-        setmeal.setUpdateTime(LocalDateTime.now());
+        // setmeal.setCreateTime(LocalDateTime.now());
+        // setmeal.setUpdateTime(LocalDateTime.now());
 
         // 设置创建、更新用户
-        setmeal.setCreateUser(BaseContext.getCurrentId());
-        setmeal.setUpdateUser(BaseContext.getCurrentId());
+        // setmeal.setCreateUser(BaseContext.getCurrentId());
+        // setmeal.setUpdateUser(BaseContext.getCurrentId());
 
         setmealMapper.insertSetmeal(setmeal);
 
         List<SetmealDish> setmealDishList = setmealDTO.getSetmealDishes();
 
-        // 设置套餐菜品的套餐Id
+        // 遍历套餐菜品列表
         setmealDishList.forEach(setmealDish -> {
+            // 设置套餐菜品的套餐Id
             setmealDish.setSetmealId(setmeal.getId());
         });
 
@@ -164,14 +166,15 @@ public class SetmealServiceImpl implements SetmealService {
 
         // 设置套餐Id
         setmeal.setId(id);
+
         // 设置套餐状态
         setmeal.setStatus(status);
 
         // 设置更新时间
-        setmeal.setUpdateTime(LocalDateTime.now());
+        // setmeal.setUpdateTime(LocalDateTime.now());
 
         // 设置更新员工
-        setmeal.setUpdateUser(BaseContext.getCurrentId());
+        // setmeal.setUpdateUser(BaseContext.getCurrentId());
 
         // 执行更新套餐状态信息
         setmealMapper.updateSetmeal(setmeal);
@@ -189,10 +192,10 @@ public class SetmealServiceImpl implements SetmealService {
         BeanUtils.copyProperties(setmealDTO, setmeal);
 
         // 设置更新时间
-        setmeal.setUpdateTime(LocalDateTime.now());
+        // setmeal.setUpdateTime(LocalDateTime.now());
 
         // 设置更新用户
-        setmeal.setUpdateUser(BaseContext.getCurrentId());
+        // setmeal.setUpdateUser(BaseContext.getCurrentId());
 
         // 执行更新套餐SQL
         setmealMapper.updateSetmeal(setmeal);
@@ -228,7 +231,7 @@ public class SetmealServiceImpl implements SetmealService {
         List<Long> setmealIdList = Arrays.asList(ids);
 
         // 遍历套餐Id列表
-        setmealIdList = setmealIdList.stream().map(id -> {
+        setmealIdList = setmealIdList.stream().peek(id -> {
             // 根据Id查询套餐信息
             Setmeal setmeal = setmealMapper.selectSetmealById(id);
 
@@ -238,7 +241,6 @@ public class SetmealServiceImpl implements SetmealService {
                 throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
             }
 
-            return id;
         }).collect(Collectors.toList());
 
         // 执行批量删除套餐

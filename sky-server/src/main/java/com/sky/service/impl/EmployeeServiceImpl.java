@@ -35,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 根据Id查询员工
      * @param id 员工Id
-     * @return
+     * @return Employee
      */
     public Employee getById(Long id) {
 
@@ -45,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 根据分页查询员工
      * @param name 员工姓名
-     * @return
+     * @return PageResult
      */
     @Override
     public PageResult getByPage(String name, Integer page, Integer pageSize) {
@@ -65,8 +65,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 员工登录
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 员工登录DTO
+     * @return Employee
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
 
@@ -78,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
 
-        //账号不存在
+        // 账号不存在
         if (employee == null) {
 
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
@@ -93,7 +93,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         // 账号被锁定
-        if (employee.getStatus() == StatusConstant.DISABLE) {
+        if (employee.getStatus().equals(StatusConstant.DISABLE)) {
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
 
@@ -103,7 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 保存员工信息
-     * @param employeeDTO
+     * @param employeeDTO 员工DTO
      */
     @Override
     public void saveEmployee(EmployeeDTO employeeDTO) {
@@ -118,14 +118,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
 
         // 设置创建、更新时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        // employee.setCreateTime(LocalDateTime.now());
+        // employee.setUpdateTime(LocalDateTime.now());
 
         // 设置创建、更新人
-        // employee.setCreateUser(1L);
-        // employee.setUpdateUser(1L);
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        // employee.setCreateUser(BaseContext.getCurrentId());
+        // employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.saveEmployee(employee);
     }
@@ -133,42 +131,53 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 更新员工状态
      *
-     * @param status
-     * @param id
+     * @param status 员工状态
+     * @param id 员工Id
      */
     @Override
-    public void updateStatus(Integer status, Integer id) {
+    public void updateStatus(Integer status, Long id) {
 
-        employeeMapper.updateStatus(status, id);
+        Employee employee = new Employee();
+
+        // 设置员工Id
+        employee.setId(id);
+
+        // 设置员工状态
+        employee.setStatus(status);
+
+        // employeeMapper.updateStatus(status, id);
+        employeeMapper.updateStatus(employee);
     }
 
     /**
      * 更新员工信息
      *
-     * @param employeeDTO
+     * @param employeeDTO 员工DTO
      */
     @Override
     public void updateEmployee(EmployeeDTO employeeDTO) {
 
         Employee employee = new Employee();
+
         BeanUtils.copyProperties(employeeDTO, employee);
 
         // 设置更新时间
-        employee.setUpdateTime(LocalDateTime.now());
+        // employee.setUpdateTime(LocalDateTime.now());
 
         // 设置更新人
-        employee.setUpdateUser(1L);
+        // employee.setUpdateUser(1L);
 
         employeeMapper.updateEmployee(employee);
     }
 
     /**
      * 更新员工密码
-     * @param passwordEditDTO
+     * @param passwordEditDTO 密码编辑DTO
      */
     @Override
     public void updatePassword(PasswordEditDTO passwordEditDTO) {
 
+        // 根据员工Id查询员工
         Employee employee = employeeMapper.getById(BaseContext.getCurrentId());
 
         // 将旧密码转换成MD5
@@ -182,7 +191,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 将新密码转换成MD5
         String newPassword = DigestUtils.md5DigestAsHex(passwordEditDTO.getNewPassword().getBytes(StandardCharsets.UTF_8));
 
-        employeeMapper.updatePassword(newPassword, employee.getId());
+        // 设置新密码
+        employee.setPassword(newPassword);
+        // employeeMapper.updatePassword(newPassword, employee.getId());
+
+        employeeMapper.updatePassword(employee);
     }
 
 }

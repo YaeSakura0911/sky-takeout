@@ -1,7 +1,9 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.annotation.AutoFill;
 import com.sky.entity.Setmeal;
+import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public interface SetmealMapper {
      * 新增套餐
      * @param setmeal 套餐Entity
      */
+    @AutoFill(OperationType.INSERT)
     @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("INSERT INTO setmeal VALUE (null, #{categoryId}, #{name}, #{price}, #{status}, #{description}, #{image}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     void insertSetmeal(Setmeal setmeal);
@@ -46,6 +49,7 @@ public interface SetmealMapper {
      * 更新套餐
      * @param setmeal 套餐Entity
      */
+    @AutoFill(OperationType.UPDATE)
     void updateSetmeal(Setmeal setmeal);
 
     /**
