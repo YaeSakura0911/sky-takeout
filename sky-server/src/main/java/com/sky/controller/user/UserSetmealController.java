@@ -1,5 +1,6 @@
 package com.sky.controller.user;
 
+import com.sky.entity.Setmeal;
 import com.sky.result.Result;
 import com.sky.service.UserSetmealService;
 import com.sky.vo.DishItemVO;
@@ -27,6 +28,17 @@ public class UserSetmealController {
     public Result<List<DishItemVO>> getSetmealDishById(@PathVariable Long id) {
 
         return Result.success(userSetmealService.getSetmealDishById(id));
+    }
+
+    /**
+     * 根据分类Id查询套餐
+     * @param categoryId 分类Id
+     * @return Result
+     */
+    @GetMapping("/list")
+    public Result<List<Setmeal>> getSetmealByCategoryId(Long categoryId) {
+
+        return Result.success(userSetmealService.getSetmealByCategoryId(categoryId));
     }
 
 }
