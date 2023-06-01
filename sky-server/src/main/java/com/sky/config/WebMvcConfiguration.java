@@ -1,6 +1,7 @@
 package com.sky.config;
 
 import com.sky.interceptor.JwtTokenAdminInterceptor;
+import com.sky.interceptor.JwtTokenUserInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    @Autowired
+    private JwtTokenUserInterceptor jwtTokenUserInterceptor;
 
     /**
      * 注册自定义拦截器
@@ -32,9 +35,22 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      */
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
+
+        // 添加管理员JWT Token拦截器
         registry.addInterceptor(jwtTokenAdminInterceptor)
+                // 拦截所有 /admin 开头的请求
                 .addPathPatterns("/admin/**")
+                // 放行登录请求
                 .excludePathPatterns("/admin/employee/login");
+
+        // 添加用户JWT Token拦截器
+        registry.addInterceptor(jwtTokenUserInterceptor)
+                // 拦截所有 /user 开头的请求
+                .addPathPatterns("/user/**")
+                // 放行登录请求
+                .excludePathPatterns("/user/user/login")
+                // 放行查询店铺状态请求
+                .excludePathPatterns("/user/shop/status");
     }
 
     /**
