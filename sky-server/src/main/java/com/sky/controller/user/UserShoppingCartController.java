@@ -18,12 +18,13 @@ public class UserShoppingCartController {
     private UserShoppingCartService userShoppingCartService;
 
     /**
-     *
+     * 根据用户Id查询购物车
      * @return Result
      */
     @GetMapping("/list")
     public Result<List<ShoppingCart>> getShoppingCart() {
-        return null;
+
+        return Result.success(userShoppingCartService.getShoppingCart());
     }
 
 }
