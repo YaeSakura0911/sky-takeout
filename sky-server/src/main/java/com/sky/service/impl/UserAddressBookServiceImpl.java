@@ -17,10 +17,24 @@ public class UserAddressBookServiceImpl implements UserAddressBookService {
 
     /**
      * 查询所有地址
+     *
+     * @return List<AddressBook>
      */
     @Override
     public List<AddressBook> getAddressBookForList() {
+
         return addressBookMapper.selectByUserId(BaseContext.getCurrentId());
+    }
+
+    /**
+     * 查询默认地址
+     *
+     * @return AddressBook
+     */
+    @Override
+    public AddressBook getAddressBookByDefault() {
+
+        return addressBookMapper.selectByUserIdAndIsDefault(BaseContext.getCurrentId());
     }
 
     /**

@@ -8,8 +8,17 @@ public interface UserAddressBookService {
 
     /**
      * 查询所有地址
+     *
+     * @return List<Address> 地址列表
      */
     List<AddressBook> getAddressBookForList();
+
+    /**
+     * 查询默认地址
+     *
+     * @return AddressBook
+     */
+    AddressBook getAddressBookByDefault();
 
     /**
      * 新增地址

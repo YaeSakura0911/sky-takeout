@@ -17,6 +17,7 @@ public class UserAddressBookController {
 
     /**
      * 查询所有地址
+     *
      * @return Result
      */
     @GetMapping("/list")
@@ -26,7 +27,19 @@ public class UserAddressBookController {
     }
 
     /**
+     * 查询默认地址
+     *
+     * @return Result
+     */
+    @GetMapping("/default")
+    public Result<AddressBook> getAddressBookByDefault() {
+
+        return Result.success(userAddressBookService.getAddressBookByDefault());
+    }
+
+    /**
      * 新增地址
+     *
      * @param addressBook 地址Entity
      * @return Result
      */
@@ -40,6 +53,7 @@ public class UserAddressBookController {
 
     /**
      * 更新默认地址
+     *
      * @param addressBook 地址Entity
      * @return Result
      */
