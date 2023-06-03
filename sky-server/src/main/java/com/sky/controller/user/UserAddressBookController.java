@@ -38,6 +38,18 @@ public class UserAddressBookController {
     }
 
     /**
+     * 根据Id查询地址
+     *
+     * @param id 地址Id
+     * @return Result
+     */
+    @GetMapping("/{id}")
+    public Result<AddressBook> getAddressBookById(@PathVariable Long id) {
+
+        return Result.success(userAddressBookService.getAddressBookById(id));
+    }
+
+    /**
      * 新增地址
      *
      * @param addressBook 地址Entity

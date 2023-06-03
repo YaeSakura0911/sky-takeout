@@ -21,6 +21,14 @@ public interface UserAddressBookService {
     AddressBook getAddressBookByDefault();
 
     /**
+     * 根据Id查询地址
+     * 
+     * @param id 地址Id
+     * @return AddressBook
+     */
+    AddressBook getAddressBookById(Long id);
+
+    /**
      * 新增地址
      *
      * @param addressBook 地址Entity
