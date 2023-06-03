@@ -17,5 +17,11 @@ public interface UserShoppingCartService {
      * 添加购物车商品
      * @param shoppingCartDTO 购物车DTO
      */
-    void saveShoppingCart(ShoppingCartDTO shoppingCartDTO);
+    void addShoppingCart(ShoppingCartDTO shoppingCartDTO);
+
+    /**
+     * 减少购物车商品
+     * @param shoppingCartDTO 购物车DTO
+     */
+    void subShoppingCart(ShoppingCartDTO shoppingCartDTO);
 }

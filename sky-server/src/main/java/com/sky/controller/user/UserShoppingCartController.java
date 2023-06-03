@@ -34,7 +34,15 @@ public class UserShoppingCartController {
     @PostMapping("/add")
     public Result<String> saveShoppingCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
 
-        userShoppingCartService.saveShoppingCart(shoppingCartDTO);
+        userShoppingCartService.addShoppingCart(shoppingCartDTO);
+
+        return Result.success();
+    }
+
+    @PostMapping("/sub")
+    public Result<String> subShoppingCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
+
+        userShoppingCartService.subShoppingCart(shoppingCartDTO);
 
         return Result.success();
     }

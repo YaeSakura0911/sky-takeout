@@ -42,7 +42,7 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
      * @param shoppingCartDTO 购物车DTO
      */
     @Override
-    public void saveShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+    public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
 
         // 获取菜品Id
         Long dishId = shoppingCartDTO.getDishId();
@@ -188,6 +188,106 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
 
             // 执行根据用户Id和菜品Id更新购物车SQL
             shoppingCartMapper.updateByUserIdAndSetmealId(shoppingCart);
+
+        }
+
+    }
+
+    /**
+     * 减少购物车商品
+     * @param shoppingCartDTO 购物车DTO
+     */
+    @Override
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+
+        // 获取菜品Id
+        Long dishId = shoppingCartDTO.getDishId();
+
+        // 获取套餐Id
+        Long setmealId = shoppingCartDTO.getSetmealId();
+
+        // 获取菜品口味
+        String dishFlavor = shoppingCartDTO.getDishFlavor();
+
+        // 获取用户Id
+        Long userId = BaseContext.getCurrentId();
+
+        if (dishId != null) {
+
+            // 根据用户Id和菜品Id查询购物车
+            ShoppingCart shoppingCart = shoppingCartMapper.selectByUserIdAndDishId(userId, dishId);
+
+            // 取得菜品数量
+            Integer number = shoppingCart.getNumber();
+
+            // 取得总价
+            BigDecimal amount = shoppingCart.getAmount();
+
+            // 如果菜品数量等于1
+            if (number == 1) {
+
+                // 执行删除购物车
+                shoppingCartMapper.deleteByUserIdAndDishId(userId, dishId);
+            }
+            else {
+
+                // 计算菜品单价
+                BigDecimal price = amount.divide(BigDecimal.valueOf(number));
+
+                // 菜品数量-1
+                number -= 1;
+
+                // 计算新的总价
+                amount = price.multiply(BigDecimal.valueOf(number));
+
+                // 设置菜品数量
+                shoppingCart.setNumber(number);
+
+                // 设置菜品总价
+                shoppingCart.setAmount(amount);
+
+                // 执行根据用户Id和菜品Id更新购物车SQL
+                shoppingCartMapper.updateByUserIdAndDishId(shoppingCart);
+            }
+
+        }
+
+        // 如果购物车DTO中的套餐Id不为空
+        if (setmealId != null) {
+
+            ShoppingCart shoppingCart = shoppingCartMapper.selectByUserIdAndSetmealId(userId, setmealId);
+
+            // 取得菜品数量
+            Integer number = shoppingCart.getNumber();
+
+            // 取得总价
+            BigDecimal amount = shoppingCart.getAmount();
+
+            // 如果数量等于1
+            if (number == 1) {
+
+                // 执行根据用户Id和套餐Id删除购物车SQL
+                shoppingCartMapper.deleteByUserIdAndSetmealId(userId, setmealId);
+            }
+            else {
+                // 计算菜品单价
+                BigDecimal price = amount.divide(BigDecimal.valueOf(number));
+
+                // 菜品数量-1
+                number -= 1;
+
+                // 计算新的总价
+                amount = price.multiply(BigDecimal.valueOf(number));
+
+                // 设置菜品数量
+                shoppingCart.setNumber(number);
+
+                // 设置菜品总价
+                shoppingCart.setAmount(amount);
+
+                // 执行根据用户Id和菜品Id更新购物车SQL
+                shoppingCartMapper.updateByUserIdAndSetmealId(shoppingCart);
+            }
 
         }
 
