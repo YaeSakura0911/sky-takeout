@@ -100,30 +100,32 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
                 // 执行插入购物车SQL
                 shoppingCartMapper.insert(shoppingCart);
             }
+            else {
 
-            // 取得菜品数量
-            Integer number = shoppingCart.getNumber();
+                // 取得菜品数量
+                Integer number = shoppingCart.getNumber();
 
-            // 取得总价
-            BigDecimal amount = shoppingCart.getAmount();
+                // 取得总价
+                BigDecimal amount = shoppingCart.getAmount();
 
-            // 计算菜品单价
-            BigDecimal price = amount.divide(BigDecimal.valueOf(number));
+                // 计算菜品单价
+                BigDecimal price = amount.divide(BigDecimal.valueOf(number));
 
-            // 菜品数量+1
-            number += 1;
+                // 菜品数量+1
+                number += 1;
 
-            // 计算新的总价
-            amount = price.multiply(BigDecimal.valueOf(number));
+                // 计算新的总价
+                amount = price.multiply(BigDecimal.valueOf(number));
 
-            // 设置菜品数量
-            shoppingCart.setNumber(number);
+                // 设置菜品数量
+                shoppingCart.setNumber(number);
 
-            // 设置菜品总价
-            shoppingCart.setAmount(amount);
+                // 设置菜品总价
+                shoppingCart.setAmount(amount);
 
-            // 执行根据用户Id和菜品Id更新购物车SQL
-            shoppingCartMapper.updateByUserIdAndDishId(shoppingCart);
+                // 执行根据用户Id和菜品Id更新购物车SQL
+                shoppingCartMapper.updateByUserIdAndDishId(shoppingCart);
+            }
 
         }
 
@@ -164,30 +166,32 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
                 // 执行插入购物车SQL
                 shoppingCartMapper.insert(shoppingCart);
             }
+            else {
 
-            // 取得菜品数量
-            Integer number = shoppingCart.getNumber();
+                // 取得菜品数量
+                Integer number = shoppingCart.getNumber();
 
-            // 取得总价
-            BigDecimal amount = shoppingCart.getAmount();
+                // 取得总价
+                BigDecimal amount = shoppingCart.getAmount();
 
-            // 计算菜品单价
-            BigDecimal price = amount.divide(BigDecimal.valueOf(number));
+                // 计算菜品单价
+                BigDecimal price = amount.divide(BigDecimal.valueOf(number));
 
-            // 菜品数量+1
-            number += 1;
+                // 菜品数量+1
+                number += 1;
 
-            // 计算新的总价
-            amount = price.multiply(BigDecimal.valueOf(number));
+                // 计算新的总价
+                amount = price.multiply(BigDecimal.valueOf(number));
 
-            // 设置菜品数量
-            shoppingCart.setNumber(number);
+                // 设置菜品数量
+                shoppingCart.setNumber(number);
 
-            // 设置菜品总价
-            shoppingCart.setAmount(amount);
+                // 设置菜品总价
+                shoppingCart.setAmount(amount);
 
-            // 执行根据用户Id和菜品Id更新购物车SQL
-            shoppingCartMapper.updateByUserIdAndSetmealId(shoppingCart);
+                // 执行根据用户Id和菜品Id更新购物车SQL
+                shoppingCartMapper.updateByUserIdAndSetmealId(shoppingCart);
+            }
 
         }
 
