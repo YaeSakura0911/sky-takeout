@@ -3,6 +3,7 @@ package com.sky.controller.user;
 import com.sky.entity.AddressBook;
 import com.sky.result.Result;
 import com.sky.service.UserAddressBookService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,5 +90,14 @@ public class UserAddressBookController {
         userAddressBookService.updateAddressBook(addressBook);
 
         return Result.success();
+    }
+
+    @DeleteMapping
+    public Result<String> deleteAddressBook(Long id) {
+
+        userAddressBookService.deleteAddressBook(id);
+
+        return Result.success();
+
     }
 }

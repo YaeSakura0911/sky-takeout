@@ -112,4 +112,15 @@ public class UserAddressBookServiceImpl implements UserAddressBookService {
 
         addressBookMapper.update(addressBook);
     }
+
+    /**
+     * 删除地址
+     *
+     * @param id 地址Id
+     */
+    @Override
+    public void deleteAddressBook(Long id) {
+
+        addressBookMapper.delete(id);
+    }
 }

@@ -48,4 +48,11 @@ public interface UserAddressBookService {
      * @param addressBook 地址Entity
      */
     void updateAddressBook(AddressBook addressBook);
+
+    /**
+     * 删除地址
+     *
+     * @param id 地址Id
+     */
+    void deleteAddressBook(Long id);
 }
