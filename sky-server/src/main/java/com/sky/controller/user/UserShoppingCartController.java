@@ -32,17 +32,34 @@ public class UserShoppingCartController {
      * @return Result
      */
     @PostMapping("/add")
-    public Result<String> saveShoppingCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
+    public Result<String> addShoppingCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
 
         userShoppingCartService.addShoppingCart(shoppingCartDTO);
 
         return Result.success();
     }
 
+    /**
+     * 减少购物车商品
+     * @param shoppingCartDTO 购物车DTO
+     * @return Result
+     */
     @PostMapping("/sub")
     public Result<String> subShoppingCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
 
         userShoppingCartService.subShoppingCart(shoppingCartDTO);
+
+        return Result.success();
+    }
+
+    /**
+     * 清空购物车
+     * @return Result
+     */
+    @DeleteMapping("/clean")
+    public Result<String> clearShoppingCart() {
+
+        userShoppingCartService.clearShoppingCart();
 
         return Result.success();
     }

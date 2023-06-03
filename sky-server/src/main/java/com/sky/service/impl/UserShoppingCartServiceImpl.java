@@ -292,4 +292,13 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
         }
 
     }
+
+    /**
+     * 清空购物车
+     */
+    @Override
+    public void clearShoppingCart() {
+
+        shoppingCartMapper.deleteByUserId(BaseContext.getCurrentId());
+    }
 }

@@ -71,4 +71,11 @@ public interface ShoppingCartMapper {
     @Delete("DELETE FROM shopping_cart WHERE user_id = #{userId} AND setmeal_id = #{setmealId}")
     void deleteByUserIdAndSetmealId(Long userId, Long setmealId);
 
+    /**
+     * 根据用户Id删除购物车
+     * @param userId 用户Id
+     */
+    @Delete("DELETE FROM shopping_cart WHERE user_id = #{userId}")
+    void deleteByUserId(Long userId);
+
 }
