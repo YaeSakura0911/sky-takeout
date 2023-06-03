@@ -76,4 +76,18 @@ public class UserAddressBookController {
 
         return Result.success();
     }
+
+    /**
+     * 更新地址
+     *
+     * @param addressBook 地址Entity
+     * @return Result
+     */
+    @PutMapping
+    public Result<String> updateAddressBook(@RequestBody AddressBook addressBook) {
+
+        userAddressBookService.updateAddressBook(addressBook);
+
+        return Result.success();
+    }
 }

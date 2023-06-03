@@ -101,4 +101,15 @@ public class UserAddressBookServiceImpl implements UserAddressBookService {
         // 执行更新新地址的默认地址状态
         addressBookMapper.update(newDefaultAddressBook);
     }
+
+    /**
+     * 更新地址
+     *
+     * @param addressBook 地址Entity
+     */
+    @Override
+    public void updateAddressBook(AddressBook addressBook) {
+
+        addressBookMapper.update(addressBook);
+    }
 }

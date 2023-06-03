@@ -22,7 +22,7 @@ public interface UserAddressBookService {
 
     /**
      * 根据Id查询地址
-     * 
+     *
      * @param id 地址Id
      * @return AddressBook
      */
@@ -41,4 +41,11 @@ public interface UserAddressBookService {
      * @param addressBook 地址Entity
      */
     void updateAddressBookDefault(AddressBook addressBook);
+
+    /**
+     * 更新地址
+     *
+     * @param addressBook 地址Entity
+     */
+    void updateAddressBook(AddressBook addressBook);
 }
