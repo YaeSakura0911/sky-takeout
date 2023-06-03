@@ -5,20 +5,9 @@
 <mapper namespace="com.sky.mapper.ShoppingCartMapper">
 
     <!-- 插入购物车 -->
-    <insert id="insert">
-        INSERT INTO shopping_cart VALUE 
-            (null, #{name}, #{image}, #{userId}, 
-             <if test="dishId != null">
-                 #{dishId}, 
-             </if>
-             <if test="setmealId != null">
-                 #{setmealId},
-             </if>
-             <if test="dishFlavor">
-                 #{dishFlavor},
-             </if>
-             #{number}, #{amount}, #{createTime})
-    </insert>
+<!--    <insert id="insert">-->
+<!--        INSERT INTO shopping_cart VALUE (null, #{name}, #{image}, #{userId}, #{dishId}, #{setmealId}, #{dishFlavor}, #{number}, #{amount}, #{createTime})-->
+<!--    </insert>-->
 
     <!-- 购物车删除商品 -->
 <!--    <delete id="delete">-->

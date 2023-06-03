@@ -31,13 +31,14 @@ public interface ShoppingCartMapper {
      * @param setmealId 套餐Id
      * @return ShoppingCart - 购物车Entity
      */
-    @Select("SELECT * FROM shopping_cart WHERE user_id = #{userId} AND dish_id = #{setmealId}")
+    @Select("SELECT * FROM shopping_cart WHERE user_id = #{userId} AND setmeal_id = #{setmealId}")
     ShoppingCart selectByUserIdAndSetmealId(Long userId, Long setmealId);
 
     /**
      * 插入购物车
      * @param shoppingCart 购物车Entity
      */
+    @Insert("INSERT INTO shopping_cart VALUE (null, #{name}, #{image}, #{userId}, #{dishId}, #{setmealId}, #{dishFlavor}, #{number}, #{amount}, #{createTime})")
     void insert(ShoppingCart shoppingCart);
 
     /**
