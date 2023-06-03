@@ -4,9 +4,7 @@ import com.sky.entity.AddressBook;
 import com.sky.result.Result;
 import com.sky.service.UserAddressBookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,18 @@ public class UserAddressBookController {
     public Result<List<AddressBook>> getAddressBookForList() {
 
         return Result.success(userAddressBookService.getAddressBookForList());
+    }
+
+    /**
+     * 新增地址
+     * @param addressBook 地址Entity
+     * @return Result
+     */
+    @PostMapping
+    public Result<String> saveAddressBook(@RequestBody AddressBook addressBook) {
+
+        userAddressBookService.saveAddressBook(addressBook);
+
+        return Result.success();
     }
 }

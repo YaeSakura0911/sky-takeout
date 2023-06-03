@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.sky.entity.AddressBook;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -16,4 +17,11 @@ public interface AddressBookMapper {
      */
     @Select("SELECT * FROM address_book WHERE user_id = #{userId}")
     List<AddressBook> selectByUserId(Long userId);
+
+    /**
+     * 新增地址
+     * @param addressBook 地址Entity
+     */
+    @Insert("INSERT INTO address_book VALUE (null, #{userId}, #{consignee}, #{sex}, #{phone}, #{provinceCode}, #{provinceName}, #{cityCode}, #{cityName}, #{districtCode}, #{districtName}, #{detail}, #{label}, #{isDefault})")
+    void insert(AddressBook addressBook);
 }
