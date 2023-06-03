@@ -37,4 +37,17 @@ public class UserAddressBookController {
 
         return Result.success();
     }
+
+    /**
+     * 更新默认地址
+     * @param addressBook 地址Entity
+     * @return Result
+     */
+    @PutMapping("/default")
+    public Result<String> updateAddressBookDefault(@RequestBody AddressBook addressBook) {
+
+        userAddressBookService.updateAddressBookDefault(addressBook);
+
+        return Result.success();
+    }
 }

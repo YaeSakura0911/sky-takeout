@@ -13,7 +13,15 @@ public interface UserAddressBookService {
 
     /**
      * 新增地址
+     *
      * @param addressBook 地址Entity
      */
     void saveAddressBook(AddressBook addressBook);
+
+    /**
+     * 更新地址默认状态
+     *
+     * @param addressBook 地址Entity
+     */
+    void updateAddressBookDefault(AddressBook addressBook);
 }
