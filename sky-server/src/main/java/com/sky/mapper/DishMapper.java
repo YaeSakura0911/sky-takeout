@@ -35,7 +35,7 @@ public interface DishMapper {
      * @param categoryId 分类Id
      * @return List<Dish> - 菜品列表
      */
-    @Select("SELECT * FROM dish WHERE category_id = #{categoryId}")
+    @Select("SELECT * FROM dish WHERE category_id = #{categoryId} AND status = 1")
     List<Dish> selectDishByCategoryId(Long categoryId);
 
     /**

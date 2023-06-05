@@ -33,7 +33,7 @@ public interface SetmealMapper {
      * @param categoryId 套餐Id
      * @return List<Setmeal> - 套餐列表
      */
-    @Select("SELECT * FROM setmeal WHERE category_id = #{categoryId}")
+    @Select("SELECT * FROM setmeal WHERE category_id = #{categoryId} AND status = 1")
     List<Setmeal> selectSetmealByCategoryId(Long categoryId);
 
     /**
