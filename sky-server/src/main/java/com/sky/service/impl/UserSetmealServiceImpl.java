@@ -9,6 +9,7 @@ import com.sky.mapper.SetmealMapper;
 import com.sky.service.UserSetmealService;
 import com.sky.vo.DishItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public class UserSetmealServiceImpl implements UserSetmealService {
      * @return List<Setmeal>
      */
     @Override
+    @Cacheable(cacheNames = "setmeal", key = "#categoryId")
     public List<Setmeal> getSetmealByCategoryId(Long categoryId) {
 
         return setmealMapper.selectSetmealByCategoryId(categoryId);
