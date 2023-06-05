@@ -1,14 +1,13 @@
 package com.sky.controller.user;
 
+import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.Result;
 import com.sky.service.UserOrderService;
+import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user/order")
@@ -27,6 +26,18 @@ public class UserOrderController {
     public Result<OrderSubmitVO> submitOrder(@RequestBody OrdersSubmitDTO ordersSubmitDTO) {
 
         return Result.success(userOrderService.submitOrder(ordersSubmitDTO));
+    }
+
+    /**
+     * 支付订单
+     *
+     * @param ordersPaymentDTO 支付订单DTO
+     * @return Result
+     */
+    @PutMapping("/payment")
+    public Result<OrderPaymentVO> payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) {
+
+        return Result.success(userOrderService.payment(ordersPaymentDTO));
     }
 
 }

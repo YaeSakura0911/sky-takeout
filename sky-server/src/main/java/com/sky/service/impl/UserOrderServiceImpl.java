@@ -1,12 +1,14 @@
 package com.sky.service.impl;
 
 import com.sky.context.BaseContext;
+import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.AddressBook;
 import com.sky.entity.Orders;
 import com.sky.mapper.AddressBookMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.service.UserOrderService;
+import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +67,19 @@ public class UserOrderServiceImpl implements UserOrderService {
 
         return new OrderSubmitVO(orders.getId(), number, orders.getAmount(), orders.getOrderTime());
 
+    }
+
+    /**
+     * 支付订单
+     *
+     * @param ordersPaymentDTO 支付订单DTO
+     * @return OrderPaymentVO
+     */
+    @Override
+    public OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) {
+
+
+
+        return null;
     }
 }
