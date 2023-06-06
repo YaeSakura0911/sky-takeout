@@ -3,7 +3,6 @@ package com.sky.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
-import com.sky.context.BaseContext;
 import com.sky.dto.DishDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Dish;
@@ -19,10 +18,10 @@ import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -125,6 +124,7 @@ public class DishServiceImpl implements DishService {
      */
     @Transactional
     @Override
+    @CacheEvict(cacheNames = "dish", key = "#dishDTO.categoryId")
     public void saveDish(DishDTO dishDTO) {
 
         Dish dish = new Dish();
@@ -165,6 +165,7 @@ public class DishServiceImpl implements DishService {
      */
     @Transactional
     @Override
+    @CacheEvict(cacheNames = "dish", key = "#dishDTO.categoryId")
     public void updateDish(DishDTO dishDTO) {
 
         Dish dish = new Dish();
@@ -206,6 +207,7 @@ public class DishServiceImpl implements DishService {
      * @param id 菜品Id
      */
     @Override
+    @CacheEvict(cacheNames = "dish", allEntries = true)
     public void updateDishStatus(Integer status, Long id) {
 
         Dish dish = new Dish();
@@ -231,6 +233,7 @@ public class DishServiceImpl implements DishService {
      */
     @Transactional
     @Override
+    @CacheEvict(cacheNames = "dish", allEntries = true)
     public void deleteDish(Long[] ids) {
 
         List<Long> dishIdList = Arrays.asList(ids);

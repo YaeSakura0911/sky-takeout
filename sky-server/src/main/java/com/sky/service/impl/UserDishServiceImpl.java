@@ -8,6 +8,7 @@ import com.sky.service.UserDishService;
 import com.sky.vo.DishVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class UserDishServiceImpl implements UserDishService {
      * @param categoryId 分类Id
      * @return List<DishVO>
      */
+    @Cacheable(cacheNames = "dish", key = "#categoryId")
     @Override
     public List<DishVO> getDishByCategoryId(Long categoryId) {
 

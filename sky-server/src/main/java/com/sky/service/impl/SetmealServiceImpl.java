@@ -20,6 +20,7 @@ import com.sky.service.SetmealService;
 import com.sky.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,6 +110,7 @@ public class SetmealServiceImpl implements SetmealService {
      */
     @Transactional
     @Override
+    @CacheEvict(cacheNames = "setmeal", key = "#setmealDTO.categoryId")
     public void saveSetmeal(SetmealDTO setmealDTO) {
 
         Setmeal setmeal = new Setmeal();
@@ -143,6 +145,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @param status 套餐状态
      */
     @Override
+    @CacheEvict(cacheNames = "setmeal", allEntries = true)
     public void updateSetmealStatus(Long id, Integer status) {
 
         // 如果是起售套餐
@@ -185,6 +188,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @param setmealDTO 套餐DTO
      */
     @Override
+    @CacheEvict(cacheNames = "setmeal", key = "#setmealDTO.categoryId")
     public void updateSetmeal(SetmealDTO setmealDTO) {
 
         Setmeal setmeal = new Setmeal();
@@ -226,6 +230,7 @@ public class SetmealServiceImpl implements SetmealService {
      */
     @Transactional
     @Override
+    @CacheEvict(cacheNames = "setmeal", allEntries = true)
     public void deleteSetmeal(Long[] ids) {
 
         List<Long> setmealIdList = Arrays.asList(ids);
