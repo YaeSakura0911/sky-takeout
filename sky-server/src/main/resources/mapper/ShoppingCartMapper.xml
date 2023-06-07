@@ -4,20 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.ShoppingCartMapper">
 
-    <!-- 插入购物车 -->
-<!--    <insert id="insert">-->
-<!--        INSERT INTO shopping_cart VALUE (null, #{name}, #{image}, #{userId}, #{dishId}, #{setmealId}, #{dishFlavor}, #{number}, #{amount}, #{createTime})-->
-<!--    </insert>-->
-
-    <!-- 购物车删除商品 -->
-<!--    <delete id="delete">-->
-<!--        DELETE FROM shopping_cart WHERE user_id = #{userId}-->
-<!--        <if test="dishId != null">-->
-<!--            AND dish_id = #{dishId}-->
-<!--        </if>-->
-<!--        <if test="setmealId != null">-->
-<!--            AND setmeal_id = #{setmealId}-->
-<!--        </if>-->
-<!--    </delete>-->
+    <!-- 批量插入购物车 -->
+    <insert id="insertBatch">
+        INSERT INTO shopping_cart VALUES
+        <foreach collection="shoppingCartList" item="shoppingCart" separator=",">
+            (null, #{shoppingCart.name}, #{shoppingCart.image}, #{shoppingCart.userId}, #{shoppingCart.dishId}, #{shoppingCart.setmealId}, #{shoppingCart.dishFlavor}, #{shoppingCart.number}, #{shoppingCart.amount}, #{shoppingCart.createTime})
+        </foreach>
+    </insert>
     
 </mapper>
