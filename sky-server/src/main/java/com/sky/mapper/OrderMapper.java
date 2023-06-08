@@ -44,6 +44,24 @@ public interface OrderMapper {
     Integer selectCountByStatus(Integer status);
 
     /**
+     * 根据日期和状态查询订单数量
+     *
+     * @param status 订单状态
+     * @param endDate 结束日期
+     * @return Integer
+     */
+    @Select("SELECT COUNT(*) FROM orders WHERE status = #{status} AND order_time BETWEEN #{beginDate} AND #{endDate}")
+    Integer selectCountByStatusAndDate(Integer status, LocalDate beginDate, LocalDate endDate);
+
+    /**
+     * 根据日期查询订单数量
+     *
+     * @return Integer
+     */
+    @Select("SELECT COUNT(*) FROM orders WHERE order_time BETWEEN #{beginDate} AND #{endDate}")
+    Integer selectCountByDate(LocalDate beginDate, LocalDate endDate);
+
+    /**
      * 根据日期查询订单
      *
      * @param beginDate 开始日期
