@@ -13,4 +13,26 @@
         </where>
     </select>
 
+    <!-- 根据条件查询订单 -->
+    <select id="selectByCondition" resultType="com.sky.entity.Orders">
+        SELECT * FROM orders
+        <where>
+            <if test="number != null">
+                AND number LIKE concat('%', #{number}, '%')
+            </if>
+            <if test="phone != null">
+                AND phone = #{phone}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="beginTime != null">
+                AND order_time >= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                AND order_time &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
 </mapper>

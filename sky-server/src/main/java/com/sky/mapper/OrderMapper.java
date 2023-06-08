@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -24,6 +25,22 @@ public interface OrderMapper {
      * @return List<Orders>
      */
     List<Orders> selectByUserIdAndStatus(Integer status);
+
+    /**
+     * 根据条件
+     *
+     * @return List<Orders>
+     */
+    List<Orders> selectByCondition(LocalDateTime beginTime, LocalDateTime endTime, String number, Integer page, Integer pageSize, String phone, Integer status);
+
+    /**
+     * 根据状态查询订单数
+     *
+     * @param status 订单状态
+     * @return Integer
+     */
+    @Select("SELECT COUNT(*) FROM orders WHERE status = #{status}")
+    Integer selectCountByStatus(Integer status);
 
     /**
      * 插入订单
