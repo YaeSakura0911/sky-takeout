@@ -7,6 +7,7 @@ import com.sky.result.Result;
 import com.sky.service.UserOrderService;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,20 @@ public class UserOrderController {
     public Result<PageResult> getOrderForPage(Integer status, Integer page, Integer pageSize) {
 
         return Result.success(userOrderService.getOrderForPage(status, page, pageSize));
+    }
+
+    /**
+     * 催单
+     *
+     * @param id 订单Id
+     * @return Result
+     */
+    @GetMapping("/reminder/{id}")
+    public Result<String> reminderOrder(@PathVariable Long id) {
+
+        userOrderService.reminderOrder(id);
+
+        return Result.success();
     }
 
     /**

@@ -27,6 +27,13 @@ public interface UserOrderService {
     PageResult getOrderForPage(Integer status, Integer page, Integer pageSize);
 
     /**
+     * 催单
+     *
+     * @param id 订单Id
+     */
+    void reminderOrder(Long id);
+
+    /**
      * 提交订单
      *
      * @param ordersSubmitDTO 提交订单DTO

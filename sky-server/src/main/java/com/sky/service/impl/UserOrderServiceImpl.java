@@ -1,7 +1,10 @@
 package com.sky.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
@@ -9,6 +12,7 @@ import com.sky.entity.AddressBook;
 import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.entity.ShoppingCart;
+import com.sky.exception.OrderBusinessException;
 import com.sky.mapper.AddressBookMapper;
 import com.sky.mapper.OrderDetailMapper;
 import com.sky.mapper.OrderMapper;
@@ -17,13 +21,16 @@ import com.sky.result.PageResult;
 import com.sky.service.UserOrderService;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -38,6 +45,8 @@ public class UserOrderServiceImpl implements UserOrderService {
     private ShoppingCartMapper shoppingCartMapper;
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     /**
      * 根据Id查询订单
@@ -102,6 +111,33 @@ public class UserOrderServiceImpl implements UserOrderService {
         }).collect(Collectors.toList());
 
         return new PageResult(ordersPage.getTotal(), orderVOList);
+    }
+
+    /**
+     * 催单
+     *
+     * @param id 订单Id
+     */
+    @Override
+    public void reminderOrder(Long id) {
+
+        // 根据订单Id查询订单
+        Orders orders = orderMapper.selectById(id);
+
+        // 如果订单为空
+        if (orders == null) {
+            // 抛出异常
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        // 封装信息
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", 2);
+        map.put("orderId", id);
+        map.put("content", "订单号：" + orders.getNumber());
+
+        // 通过WebSocket发送信息
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
     }
 
     /**
