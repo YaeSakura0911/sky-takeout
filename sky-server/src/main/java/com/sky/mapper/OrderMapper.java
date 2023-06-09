@@ -44,6 +44,16 @@ public interface OrderMapper {
     List<Orders> selectByCondition(LocalDateTime beginTime, LocalDateTime endTime, String number, Integer page, Integer pageSize, String phone, Integer status);
 
     /**
+     * 根据支付状态和支付截至时间查询
+     *
+     * @param status 支付状态
+     * @param endTime 截止时间
+     * @return List<Orders>
+     */
+    @Select("SELECT * FROM orders WHERE status = #{status} AND order_time < #{endTime}")
+    List<Orders> selectByStatusAndEndTime(Integer status, LocalDateTime endTime);
+
+    /**
      * 根据状态查询订单数
      *
      * @param status 订单状态
