@@ -17,7 +17,7 @@ import java.util.Map;
 public class WebSocketServer {
 
     // 存放会话对象
-    private final Map<String, Session> sessionMap = new HashMap<>();
+    private static Map<String, Session> sessionMap = new HashMap<>();
 
     /**
      * 连接建立时调用

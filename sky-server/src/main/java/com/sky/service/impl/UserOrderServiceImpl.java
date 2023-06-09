@@ -253,7 +253,8 @@ public class UserOrderServiceImpl implements UserOrderService {
     @Override
     public void paymentOrder(OrdersPaymentDTO ordersPaymentDTO) {
 
-        Orders orders = new Orders();
+        // Orders orders = new Orders();
+        Orders orders = orderMapper.selectByNumber(ordersPaymentDTO.getOrderNumber());
 
         // 设置订单号
         orders.setNumber(ordersPaymentDTO.getOrderNumber());
@@ -271,8 +272,17 @@ public class UserOrderServiceImpl implements UserOrderService {
         orders.setPayStatus(Orders.PAID);
 
         // 执行根据订单号更新订单SQL
-        orderMapper.updateByNumber(orders);
+        // orderMapper.updateByNumber(orders);
+        orderMapper.updateById(orders);
 
+        // 封装信息
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", 1);
+        map.put("orderId", orders.getId());
+        map.put("content", "订单号：" + ordersPaymentDTO.getOrderNumber());
+
+        // 通过WebSocket发送信息
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
     }
 
     /**

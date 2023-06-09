@@ -20,6 +20,15 @@ public interface OrderMapper {
     Orders selectById(Long id);
 
     /**
+     * 根据订单号查询订单
+     *
+     * @param number 订单号
+     * @return Orders
+     */
+    @Select("SELECT * FROM orders WHERE number = #{number}")
+    Orders selectByNumber(String number);
+
+    /**
      * 根据状态查询订单
      *
      * @param status 订单状态
@@ -93,6 +102,6 @@ public interface OrderMapper {
      *
      * @param orders 订单Entity
      */
-    @Update("UPDATE orders SET status = #{status}, cancel_reason = #{cancelReason}, cancel_time = #{cancelTime} WHERE id = #{id}")
+    // @Update("UPDATE orders SET status = #{status}, cancel_reason = #{cancelReason}, cancel_time = #{cancelTime} WHERE id = #{id}")
     void updateById(Orders orders);
 }
