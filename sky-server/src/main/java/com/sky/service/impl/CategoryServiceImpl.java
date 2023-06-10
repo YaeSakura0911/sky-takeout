@@ -148,7 +148,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Setmeal> setmealList = setmealMapper.selectSetmealByCategoryId(categoryId);
 
         // 如果套餐列表不为空
-        if (setmealList != null) {
+        if (setmealList.size() > 0) {
             //  抛出DeletionNotAllowedException异常
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
         }
@@ -157,7 +157,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Dish> dishList = dishMapper.selectDishByCategoryId(categoryId);
 
         // 如果菜品列表不为空
-        if (dishList != null) {
+        if (dishList.size() > 0) {
             // 抛出DeletionNotAllowedException异常
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);
         }
