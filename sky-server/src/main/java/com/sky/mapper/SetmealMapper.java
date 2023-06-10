@@ -13,6 +13,7 @@ public interface SetmealMapper {
 
     /**
      * 根据套餐Id查询套餐
+     *
      * @param categoryId 分类Id
      * @param name 名称
      * @param status 状态
@@ -22,6 +23,7 @@ public interface SetmealMapper {
 
     /**
      * 根据Id查询套餐
+     *
      * @param id 套餐Id
      * @return Setmeal
      */
@@ -30,6 +32,7 @@ public interface SetmealMapper {
 
     /**
      * 根据分类Id查询套餐
+     *
      * @param categoryId 套餐Id
      * @return List<Setmeal> - 套餐列表
      */
@@ -37,7 +40,17 @@ public interface SetmealMapper {
     List<Setmeal> selectSetmealByCategoryId(Long categoryId);
 
     /**
+     * 查询套餐数量
+     *
+     * @param status 套餐状态
+     * @return Integer
+     */
+    @Select("SELECT COUNT(*) FROM setmeal WHERE status = #{status}")
+    Integer selectSetmealCount(Integer status);
+
+    /**
      * 新增套餐
+     *
      * @param setmeal 套餐Entity
      */
     @AutoFill(OperationType.INSERT)
@@ -47,6 +60,7 @@ public interface SetmealMapper {
 
     /**
      * 更新套餐
+     *
      * @param setmeal 套餐Entity
      */
     @AutoFill(OperationType.UPDATE)
@@ -54,6 +68,7 @@ public interface SetmealMapper {
 
     /**
      * 批量删除套餐
+     *
      * @param ids 套餐Id列表
      */
     void deleteSetmeal(List<Long> ids);

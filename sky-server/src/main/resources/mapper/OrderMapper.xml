@@ -35,6 +35,22 @@
         </where>
     </select>
 
+    <!-- 查询订单数量 -->
+    <select id="selectOrderCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM orders
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="beginDate != null">
+                AND order_time > #{beginDate}
+            </if>
+            <if test="endDate != null">
+                AND order_time &lt; #{endDate}
+            </if>
+        </where>
+    </select>
+
     <!-- 根据Id更新订单 -->
     <update id="updateById">
         UPDATE orders

@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.result.Result;
 import com.sky.service.WorkspaceService;
+import com.sky.vo.BusinessDataVO;
 import com.sky.vo.DishOverViewVO;
 import com.sky.vo.OrderOverViewVO;
 import com.sky.vo.SetmealOverViewVO;
@@ -48,6 +49,17 @@ public class WorkspaceController {
     public Result<OrderOverViewVO> getOrderOverview() {
 
         return Result.success(workspaceService.getOrderOverview());
+    }
+
+    /**
+     * 查询今日运营数据
+     *
+     * @return Result
+     */
+    @GetMapping("/businessData")
+    public Result<BusinessDataVO> getBusinessData() {
+
+        return Result.success(workspaceService.getBusinessData());
     }
 
 }

@@ -63,6 +63,16 @@ public interface OrderMapper {
     Integer selectCountByStatus(Integer status);
 
     /**
+     * 查询订单总数
+     *
+     * @param beginDate 起始日期
+     * @param endDate 介绍日期
+     * @param status 订单状态
+     * @return Integer
+     */
+    Integer selectOrderCount(LocalDate beginDate, LocalDate endDate, Integer status);
+
+    /**
      * 根据日期和状态查询订单数量
      *
      * @param status 订单状态

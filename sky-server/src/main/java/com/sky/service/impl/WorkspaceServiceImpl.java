@@ -1,24 +1,30 @@
 package com.sky.service.impl;
 
 import com.sky.entity.Orders;
-import com.sky.mapper.OrderMapper;
-import com.sky.mapper.WorkspaceMapper;
+import com.sky.mapper.*;
 import com.sky.service.WorkspaceService;
+import com.sky.vo.BusinessDataVO;
 import com.sky.vo.DishOverViewVO;
 import com.sky.vo.OrderOverViewVO;
 import com.sky.vo.SetmealOverViewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Autowired
-    private WorkspaceMapper workspaceMapper;
-    @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private DishMapper dishMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
 
     /**
      * 查询菜品总览
@@ -30,9 +36,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         DishOverViewVO dishOverViewVO = new DishOverViewVO();
 
-        dishOverViewVO.setSold(workspaceMapper.selectEnableDish());
+        // 查询并设置起售菜品数量
+        dishOverViewVO.setSold(dishMapper.selectDishCount(1));
 
-        dishOverViewVO.setDiscontinued(workspaceMapper.selectDisabledDish());
+        // 查询并设置停售菜品数量
+        dishOverViewVO.setDiscontinued(dishMapper.selectDishCount(0));
 
         return dishOverViewVO;
 
@@ -48,9 +56,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         SetmealOverViewVO setmealOverViewVO = new SetmealOverViewVO();
 
-        setmealOverViewVO.setSold(workspaceMapper.selectEnableSetmeal());
+        // 查询并设置起售套餐数量
+        setmealOverViewVO.setSold(setmealMapper.selectSetmealCount(1));
 
-        setmealOverViewVO.setDiscontinued(workspaceMapper.selectDisabledSetmeal());
+        // 查询并设置停售套餐数量
+        setmealOverViewVO.setDiscontinued(setmealMapper.selectSetmealCount(0));
 
         return setmealOverViewVO;
     }
@@ -68,17 +78,71 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         LocalDate beginDate = LocalDate.now();
         LocalDate endDate = LocalDate.now().plusDays(1);
 
+        // 查询并设置待接单订单数量
         orderOverViewVO.setWaitingOrders(orderMapper.selectCountByStatusAndDate(Orders.TO_BE_CONFIRMED, beginDate, endDate));
 
+        // 查询并设置待派送订单数量
         orderOverViewVO.setDeliveredOrders(orderMapper.selectCountByStatusAndDate(Orders.CONFIRMED, beginDate, endDate));
 
+        // 查询并设置已完成订单数量
         orderOverViewVO.setCompletedOrders(orderMapper.selectCountByStatusAndDate(Orders.COMPLETED, beginDate, endDate));
 
+        // 查询并设置已取消订单数量
         orderOverViewVO.setCancelledOrders(orderMapper.selectCountByStatusAndDate(Orders.CANCELLED, beginDate, endDate));
 
+        // 查询并设置全部订单数量
         orderOverViewVO.setAllOrders(orderMapper.selectCountByDate(beginDate, endDate));
 
         return orderOverViewVO;
+    }
+
+    /**
+     * 查询今日运营数据
+     *
+     * @return BusinessDataVO
+     */
+    @Override
+    public BusinessDataVO getBusinessData() {
+
+        BusinessDataVO businessDataVO = new BusinessDataVO();
+
+        LocalDate today = LocalDate.now();
+        BigDecimal totalAmount = new BigDecimal(0);
+
+        // 查询今日订单列表
+        List<Orders> orders = orderMapper.selectByCompleteAndDate(today, today.plusDays(1));
+
+        // 遍历订单列表
+        for (Orders order : orders) {
+            totalAmount = totalAmount.add(order.getAmount());
+        }
+
+        // 查询有效订单数量
+        Integer validOrderCount = orderMapper.selectOrderCount(today, today.plusDays(1), Orders.COMPLETED);
+        // 查询订单总数量
+        Integer orderCount = orderMapper.selectOrderCount(today, today.plusDays(1), null);
+
+        // 查询昨日用户数量
+        Integer yesterdayUserCount = userMapper.selectUserCountByDateTime(today);
+        // 查询今日用户数量
+        Integer todayUserCount = userMapper.selectUserCountByDateTime(today.plusDays(1));
+
+        // 设置营业额
+        businessDataVO.setTurnover(totalAmount.doubleValue());
+
+        // 设置有效订单数量
+        businessDataVO.setValidOrderCount(validOrderCount);
+
+        // 设置订单完成率
+        businessDataVO.setOrderCompletionRate(validOrderCount.doubleValue() / orderCount.doubleValue());
+
+        // 设置评价客单价
+        businessDataVO.setUnitPrice(totalAmount.divide(BigDecimal.valueOf(validOrderCount)).doubleValue());
+
+        // 设置新增用户数量
+        businessDataVO.setNewUsers(todayUserCount - yesterdayUserCount);
+
+        return businessDataVO;
     }
 
 }

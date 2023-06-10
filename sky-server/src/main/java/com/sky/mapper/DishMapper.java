@@ -39,6 +39,14 @@ public interface DishMapper {
     List<Dish> selectDishByCategoryId(Long categoryId);
 
     /**
+     * 查询菜品数量
+     * @param status 菜品状态
+     * @return Integer
+     */
+    @Select("SELECT COUNT(*) FROM dish WHERE status = #{status}")
+    Integer selectDishCount(Integer status);
+
+    /**
      * 插入菜品
      * @param dish 菜品Entity
      */
