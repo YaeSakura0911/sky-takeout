@@ -137,7 +137,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         businessDataVO.setOrderCompletionRate(validOrderCount.doubleValue() / orderCount.doubleValue());
 
         // 设置评价客单价
-        businessDataVO.setUnitPrice(totalAmount.divide(BigDecimal.valueOf(validOrderCount)).doubleValue());
+        businessDataVO.setUnitPrice(totalAmount.divide(BigDecimal.valueOf(validOrderCount), 2, BigDecimal.ROUND_DOWN).doubleValue());
 
         // 设置新增用户数量
         businessDataVO.setNewUsers(todayUserCount - yesterdayUserCount);

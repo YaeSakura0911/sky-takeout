@@ -2,8 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.result.Result;
 import com.sky.service.ReportService;
-import com.sky.vo.TurnoverReportVO;
-import com.sky.vo.UserReportVO;
+import com.sky.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,5 +46,35 @@ public class ReportController {
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
 
         return Result.success(reportService.getTurnoverStatistic(begin, end));
+    }
+
+    /**
+     * 订单统计
+     *
+     * @param begin 开始日期
+     * @param end 结束日期
+     * @return Result
+     */
+    @GetMapping("/ordersStatistics")
+    public Result<OrderReportVO> getOrderStatistic(
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
+
+        return Result.success(reportService.getOrderStatistic(begin, end));
+    }
+
+    /**
+     * 销量前10统计
+     *
+     * @param begin 开始日期
+     * @param end 结束日期
+     * @return Result
+     */
+    @GetMapping("/top10")
+    public Result<SalesTop10ReportVO> getTop10(
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
+
+        return Result.success(reportService.getTop10(begin, end));
     }
 }
