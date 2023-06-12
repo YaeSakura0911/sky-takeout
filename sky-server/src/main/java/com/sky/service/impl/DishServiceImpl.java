@@ -253,7 +253,7 @@ public class DishServiceImpl implements DishService {
             }
 
             // 如果套餐菜品列表不为空
-            if (setmealDishList != null) {
+            if (setmealDishList.size() > 0) {
                 // 抛出DeletionNotAllowedException异常
                 throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
             }
