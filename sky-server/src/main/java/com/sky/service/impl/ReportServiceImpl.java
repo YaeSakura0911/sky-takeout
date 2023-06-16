@@ -290,15 +290,20 @@ public class ReportServiceImpl implements ReportService {
             // 设置日期
             row.getCell(1).setCellValue(String.valueOf(today));
             // 设置营业额
-            row.getCell(2).setCellValue(businessData.getTurnover());
+            if (businessData.getTurnover() != null)
+                row.getCell(2).setCellValue(businessData.getTurnover());
             // 设置有效订单
-            row.getCell(3).setCellValue(businessData.getValidOrderCount());
+            if (businessData.getValidOrderCount() != null)
+                row.getCell(3).setCellValue(businessData.getValidOrderCount());
             // 设置订单完成率
-            row.getCell(4).setCellValue(businessData.getOrderCompletionRate());
+            if (businessData.getOrderCompletionRate() != null)
+                row.getCell(4).setCellValue(businessData.getOrderCompletionRate());
             // 设置平均客单价
-            row.getCell(5).setCellValue(businessData.getUnitPrice());
+            if (businessData.getUnitPrice() != null)
+                row.getCell(5).setCellValue(businessData.getUnitPrice());
             // 设置新增用户数
-            row.getCell(6).setCellValue(businessData.getNewUsers());
+            if (businessData.getNewUsers() != null)
+                row.getCell(6).setCellValue(businessData.getNewUsers());
 
             today = today.plusDays(1);
         }
