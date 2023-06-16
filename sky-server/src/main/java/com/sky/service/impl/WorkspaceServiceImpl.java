@@ -102,25 +102,37 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * @return BusinessDataVO
      */
     @Override
-    public BusinessDataVO getBusinessData() {
+    public BusinessDataVO getBusinessData(LocalDate begin, LocalDate end) {
 
         BusinessDataVO businessDataVO = new BusinessDataVO();
 
-        LocalDate today = LocalDate.now();
+        LocalDate today = begin;
         BigDecimal totalAmount = new BigDecimal(0);
+        Integer totalValidOrderCount = 0;
+        Integer totalOrderCount = 0;
 
-        // 查询今日订单列表
-        List<Orders> orders = orderMapper.selectByCompleteAndDate(today, today.plusDays(1));
+        while (!today.isEqual(end.plusDays(1))) {
 
-        // 遍历订单列表
-        for (Orders order : orders) {
-            totalAmount = totalAmount.add(order.getAmount());
+            // 查询今日订单列表
+            List<Orders> orders = orderMapper.selectByCompleteAndDate(today, today.plusDays(1));
+
+            // 遍历订单列表
+            for (Orders order : orders) {
+                totalAmount = totalAmount.add(order.getAmount());
+            }
+
+            // 查询有效订单数量
+            Integer validOrderCount = orderMapper.selectOrderCount(today, today.plusDays(1), Orders.COMPLETED);
+
+            totalValidOrderCount += validOrderCount;
+
+            // 查询订单总数量
+            Integer orderCount = orderMapper.selectOrderCount(today, today.plusDays(1), null);
+
+            totalOrderCount += orderCount;
+
+            today = today.plusDays(1);
         }
-
-        // 查询有效订单数量
-        Integer validOrderCount = orderMapper.selectOrderCount(today, today.plusDays(1), Orders.COMPLETED);
-        // 查询订单总数量
-        Integer orderCount = orderMapper.selectOrderCount(today, today.plusDays(1), null);
 
         // 查询昨日用户数量
         Integer yesterdayUserCount = userMapper.selectUserCountByDateTime(today);
@@ -131,13 +143,23 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         businessDataVO.setTurnover(totalAmount.doubleValue());
 
         // 设置有效订单数量
-        businessDataVO.setValidOrderCount(validOrderCount);
+        businessDataVO.setValidOrderCount(totalValidOrderCount);
 
         // 设置订单完成率
-        businessDataVO.setOrderCompletionRate(validOrderCount.doubleValue() / orderCount.doubleValue());
+        if (totalOrderCount == 0) {
+            businessDataVO.setOrderCompletionRate(0.0);
+        }
+        else {
+            businessDataVO.setOrderCompletionRate(totalValidOrderCount.doubleValue() / totalOrderCount.doubleValue());
+        }
 
-        // 设置评价客单价
-        businessDataVO.setUnitPrice(totalAmount.divide(BigDecimal.valueOf(validOrderCount), 2, BigDecimal.ROUND_DOWN).doubleValue());
+        // 设置平均客单价
+        if (totalValidOrderCount == 0) {
+            businessDataVO.setUnitPrice(0.0);
+        }
+        else {
+            businessDataVO.setUnitPrice(totalAmount.divide(BigDecimal.valueOf(totalValidOrderCount), 2, BigDecimal.ROUND_DOWN).doubleValue());
+        }
 
         // 设置新增用户数量
         businessDataVO.setNewUsers(todayUserCount - yesterdayUserCount);

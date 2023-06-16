@@ -6,15 +6,20 @@ import com.sky.mapper.OrderDetailMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
-import com.sky.vo.OrderReportVO;
-import com.sky.vo.SalesTop10ReportVO;
-import com.sky.vo.TurnoverReportVO;
-import com.sky.vo.UserReportVO;
+import com.sky.service.WorkspaceService;
+import com.sky.vo.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +33,8 @@ public class ReportServiceImpl implements ReportService {
     private OrderMapper orderMapper;
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private WorkspaceService workspaceService;
 
     /**
      * 用户统计
@@ -223,9 +230,6 @@ public class ReportServiceImpl implements ReportService {
 
         SalesTop10ReportVO salesTop10ReportVO = new SalesTop10ReportVO();
 
-        // StringBuilder nameList = new StringBuilder();
-        // StringBuilder numberList = new StringBuilder();
-
         List<GoodsSalesDTO> goodsSalesDTOList = orderDetailMapper.selectTop10(beginDate, endDate);
 
         String nameList = StringUtils.join(goodsSalesDTOList.stream().map(GoodsSalesDTO::getName).collect(Collectors.toList()), ",");
@@ -235,5 +239,74 @@ public class ReportServiceImpl implements ReportService {
         salesTop10ReportVO.setNumberList(numberList);
 
         return salesTop10ReportVO;
+    }
+
+    /**
+     * 导出Excel报表
+     *
+     * @param response
+     */
+    @Override
+    public void exportExcel(HttpServletResponse response) throws IOException {
+
+        LocalDate end = LocalDate.now();
+        LocalDate begin = end.minusDays(30);
+
+        BusinessDataVO businessDataVO = workspaceService.getBusinessData(begin, end);
+
+        InputStream inputStream = ReportServiceImpl.class.getClassLoader().getResource("template.xlsx").openStream();
+
+        // 获取工作簿
+        XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+
+        // 获取工作表
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        // 获取第四行
+        XSSFRow row4 = sheet.getRow(3);
+        // 设置营业额
+        row4.getCell(2).setCellValue(businessDataVO.getTurnover());
+        // 设置订单完成率
+        row4.getCell(4).setCellValue(businessDataVO.getOrderCompletionRate());
+        // 设置新增用户数
+        row4.getCell(6).setCellValue(businessDataVO.getNewUsers());
+
+        // 获取第五行
+        XSSFRow row5 = sheet.getRow(4);
+        // 设置有效订单数
+        row5.getCell(2).setCellValue(businessDataVO.getValidOrderCount());
+        // 设置平均客单价
+        row5.getCell(4).setCellValue(businessDataVO.getUnitPrice());
+
+        LocalDate today = begin;
+        int rowNum = 7;
+
+        // 设置明细
+        while (!today.isEqual(end.plusDays(1))) {
+
+            BusinessDataVO businessData = workspaceService.getBusinessData(today, end);
+
+            XSSFRow row = sheet.getRow(rowNum++);
+            // 设置日期
+            row.getCell(1).setCellValue(String.valueOf(today));
+            // 设置营业额
+            row.getCell(2).setCellValue(businessData.getTurnover());
+            // 设置有效订单
+            row.getCell(3).setCellValue(businessData.getValidOrderCount());
+            // 设置订单完成率
+            row.getCell(4).setCellValue(businessData.getOrderCompletionRate());
+            // 设置平均客单价
+            row.getCell(5).setCellValue(businessData.getUnitPrice());
+            // 设置新增用户数
+            row.getCell(6).setCellValue(businessData.getNewUsers());
+
+            today = today.plusDays(1);
+        }
+
+        // 将工作簿写入流
+        workbook.write(response.getOutputStream());
+
+        // 关闭工作簿
+        workbook.close();
     }
 }

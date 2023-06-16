@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/admin/workspace")
 public class WorkspaceController {
@@ -59,7 +61,7 @@ public class WorkspaceController {
     @GetMapping("/businessData")
     public Result<BusinessDataVO> getBusinessData() {
 
-        return Result.success(workspaceService.getBusinessData());
+        return Result.success(workspaceService.getBusinessData(LocalDate.now(), LocalDate.now().plusDays(1)));
     }
 
 }
