@@ -286,7 +286,14 @@ public class ReportServiceImpl implements ReportService {
 
             BusinessDataVO businessData = workspaceService.getBusinessData(today, end);
 
+            // TODO：记得删除
+            System.out.println(businessData);
+
             XSSFRow row = sheet.getRow(rowNum++);
+
+            // TODO：记得删除
+            System.out.println(row);
+
             // 设置日期
             row.getCell(1).setCellValue(String.valueOf(today));
             // 设置营业额
